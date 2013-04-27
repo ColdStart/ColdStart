@@ -1,0 +1,48 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@drawable/background_gradient"
+    android:paddingBottom="30dp" >
+
+    <EditText
+        android:id="@+id/APIKey"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:ems="10"
+        android:hint="ColdStart API Key"
+        android:inputType="textPersonName" >
+
+        <requestFocus />
+    </EditText>
+
+    <EditText
+        android:id="@+id/keyPassword"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/APIKey"
+        android:layout_centerHorizontal="true"
+        android:ems="10"
+        android:hint="Password (if set)"
+        android:inputType="textPassword" />
+
+    <ProgressBar
+        android:id="@+id/registeringProgressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/APIKey"
+        android:layout_below="@+id/keyPassword"
+        android:layout_marginTop="12dp"
+        android:visibility="invisible" />
+
+    <Button
+        android:id="@+id/SaveButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignRight="@+id/keyPassword"
+        android:layout_below="@+id/keyPassword"
+        android:layout_marginTop="12dp"
+        android:text="Login" />
+
+</RelativeLayout>

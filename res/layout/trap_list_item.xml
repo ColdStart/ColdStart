@@ -1,0 +1,40 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@drawable/trap_list_selector"
+    android:paddingLeft="16dp"
+    android:paddingRight="8dp" >
+
+    <TextView
+        android:id="@+id/Hostname"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:ellipsize="end"
+        android:lines="1"
+        android:text="Large Text"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/IPAddress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/Hostname"
+        android:layout_toLeftOf="@+id/TrapDate"
+        android:text="Medium Text"
+        android:textAppearance="?android:attr/textAppearanceSmall" />
+
+    <TextView
+        android:id="@+id/TrapDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/IPAddress"
+        android:layout_alignBottom="@+id/IPAddress"
+        android:layout_alignParentRight="true"
+        android:text="01/01/1970"
+        android:textAppearance="?android:attr/textAppearanceSmall" />
+
+</RelativeLayout>
