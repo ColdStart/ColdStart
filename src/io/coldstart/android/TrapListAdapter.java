@@ -1,8 +1,14 @@
 package io.coldstart.android;
+import io.coldstart.android.R.color;
+
 import java.util.List;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
+import android.graphics.Color;
 import android.graphics.Typeface;
+import android.os.Build;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -65,6 +71,26 @@ public class TrapListAdapter extends BaseAdapter
 		
 		((TextView) convertView.findViewById(R.id.TrapDate)).setText(trap.date);
 		
+		((TextView) convertView.findViewById(R.id.TrapCount)).setText(Integer.toString(trap.trapCount));
+		
+		/*if(convertView.isActivated())
+		{
+			Log.e("Selected","I'm selected");
+			hostname.setTypeface(null, Typeface.BOLD);
+			hostname.setTextColor(Color.RED);
+			
+			if(Build.VERSION.SDK_INT >= 16)
+				hostname.setBackground(context.getResources().getDrawable(R.drawable.list_item_title_container_selected));
+		}
+		else
+		{
+			Log.e("Selected","I'm NOT selected");
+			hostname.setTypeface(null, Typeface.NORMAL);
+			
+			if(Build.VERSION.SDK_INT >= 16)
+				hostname.setBackground(context.getResources().getDrawable(R.drawable.list_item_title_container));
+		}*/
+	
 		return convertView;
 	}
 }

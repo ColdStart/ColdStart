@@ -14,6 +14,7 @@ public class TrapsDataSource
 	private SQLiteDatabase database;
 	private TrapsDBOpenHelper dbHelper;
 	private String[] allColumns = { "trapID","trapHostName","trapIP","trapDate","trapUptime","trapPayload","trapRead" };
+	private String[] allColumnswCount = { "trapID","trapHostName","trapIP","trapDate","trapUptime","trapPayload","trapRead","count(1) as trapCount" };
 	
 	public TrapsDataSource(Context context) 
 	{
@@ -76,7 +77,23 @@ public class TrapsDataSource
 	  {
 	    List<Trap> recentTags = new ArrayList<Trap>();
 
-	    Cursor cursor = database.query(TrapsDBOpenHelper.TABLE_NAME, allColumns, null, null, null, null, "trapID DESC");
+	    /*Cursor cursor = database.query(TrapsDBOpenHelper.TABLE_NAME, allColumns, null, null, null, null, "trapID DESC");
+
+	    cursor.moveToFirst();
+	    
+	    while (!cursor.isAfterLast()) 
+	    {
+	    	Trap thisTrap =  new Trap(cursor);
+	    	recentTags.add(thisTrap);
+	    	cursor.moveToNext();
+	    }
+	    // Make sure to close the cursor
+	    cursor.close();
+	    return recentTags;*/
+	    
+	    //"trapID","trapHostName","trapIP","trapDate","trapUptime","trapPayload","trapRead"
+	    //						 query(String table, 				String[] columns, 	String selection, 	String[] selectionArgs, String groupBy, String having, String orderBy)
+	    Cursor cursor = database.query(TrapsDBOpenHelper.TABLE_NAME, allColumnswCount, 		null, 				null, 					"trapIP", 			null, 			"trapID DESC");
 
 	    cursor.moveToFirst();
 	    

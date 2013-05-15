@@ -1,20 +1,26 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:background="@drawable/trap_list_selector"
-    android:paddingLeft="16dp"
-    android:paddingRight="8dp" >
+    android:layout_marginTop="12dp"
+    android:background="@drawable/list_item_container"
+    android:minWidth="380dp"
+    android:paddingBottom="8dp">
 
     <TextView
         android:id="@+id/Hostname"
-        android:layout_width="wrap_content"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
+        android:layout_margin="1dp"
+        android:background="@drawable/trap_list_selector"
         android:ellipsize="end"
-        android:lines="1"
+        android:maxLines="1"
+        android:paddingLeft="16dp"
         android:text="Large Text"
         android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="@color/OffWhite"
         android:textStyle="bold" />
 
     <TextView
@@ -22,8 +28,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
         android:layout_below="@+id/Hostname"
-        android:layout_toLeftOf="@+id/TrapDate"
+        android:paddingLeft="16dp"
+        android:paddingTop="8dp"
         android:text="Medium Text"
         android:textAppearance="?android:attr/textAppearanceSmall" />
 
@@ -31,10 +39,32 @@
         android:id="@+id/TrapDate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/IPAddress"
-        android:layout_alignBottom="@+id/IPAddress"
         android:layout_alignParentRight="true"
+        android:layout_below="@+id/IPAddress"
+        android:layout_marginRight="8dp"
+        android:background="@drawable/count_container"
+        android:drawableLeft="@drawable/ic_event_time"
+        android:gravity="center_vertical"
+        android:paddingRight="8dp"
         android:text="01/01/1970"
-        android:textAppearance="?android:attr/textAppearanceSmall" />
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:textColor="@color/CountText" />
+
+    <TextView
+        android:id="@+id/TrapCount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/TrapDate"
+        android:layout_alignBottom="@+id/TrapDate"
+        android:layout_marginRight="16dp"
+        android:layout_toLeftOf="@+id/TrapDate"
+        android:background="@drawable/count_container"
+        android:drawableLeft="@drawable/ic_event_count"
+        android:gravity="right|center_vertical"
+        android:minWidth="70dp"
+        android:paddingRight="8dp"
+        android:text="10"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:textColor="@color/CountText" />
 
 </RelativeLayout>

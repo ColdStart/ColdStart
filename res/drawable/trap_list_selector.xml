@@ -1,4 +1,4 @@
 <selector xmlns:android="http://schemas.android.com/apk/res/android" android:exitFadeDuration="@android:integer/config_mediumAnimTime">
-    <item android:state_activated="true" android:drawable="@color/AlphaBlueHighlight" />
-    <item android:drawable="@color/DefaultBackground" />
+    <item android:state_activated="true" android:drawable="@drawable/list_item_title_container_selected"/>
+    <item android:drawable="@drawable/list_item_title_container"/>
 </selector>

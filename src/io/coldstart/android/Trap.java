@@ -3,6 +3,7 @@ package io.coldstart.android;
 import android.database.Cursor;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.util.Log;
 
 public class Trap implements Parcelable 
 {
@@ -13,6 +14,7 @@ public class Trap implements Parcelable
 	public String IP = "127.0.0.1";
 	String trap = "";
 	Boolean read = false;
+	int trapCount = 0;
 	
 	public Trap(String a, String b)
 	{
@@ -41,7 +43,6 @@ public class Trap implements Parcelable
 		this.date = cursor.getString(3);
 		this.uptime = cursor.getString(4);
 		this.trap = cursor.getString(5);
-		
 		int read = cursor.getInt(6);
 		if(read == 0)
 		{
@@ -50,6 +51,17 @@ public class Trap implements Parcelable
 		else
 		{
 			this.read = true;
+		}
+		
+		try
+		{
+			this.trapCount = cursor.getInt(7);
+			
+			Log.e("TrapCount",Integer.toString(this.trapCount));
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
 		}
 	}
 

@@ -26,6 +26,7 @@
         android:name="io.coldstart.android.TrapListFragment"
         android:layout_width="0dp"
         android:layout_height="match_parent"
+        android:layout_marginRight="8dp"
         android:layout_weight="1"
         android:tag="ListofTraps"
         tools:layout="@android:layout/list_content" />

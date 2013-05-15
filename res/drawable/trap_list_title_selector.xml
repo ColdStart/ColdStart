@@ -1,0 +1,5 @@
+<selector xmlns:android="http://schemas.android.com/apk/res/android" android:exitFadeDuration="@android:integer/config_mediumAnimTime">
+    <item android:state_activated="true" android:color="@color/AlphaBlue" />
+    <item android:state_selected="true" android:color="@color/AlphaBlue" />
+    <item android:color="@color/LightGrey" />
+</selector>

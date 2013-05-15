@@ -20,11 +20,19 @@
     <color name="pressed_dzero">#CC1284db</color>
     
     <color name="DefaultBackground">#f5f5f5</color>
-        <color name="OffWhite">#ebebeb</color>
+        <color name="OffWhite">#eeeeee</color>
         <color name="Blue">#0066b3</color>
+        <color name="AlphaBlue">#ab0066b3</color>
         <color name="BlueHighlight">#1285db</color>
         <color name="AlphaBlueHighlight">#7F1285db</color>
         <color name="BlueShadow">#00508d</color>
         <color name="Grey">#58585a</color>
         <color name="LightGrey">#737373</color>
+        <color name="ReallyLightGrey">#abababab</color>
+        
+	<!-- Count Colors -->
+	<color name="CountTop">#fbfbfc</color>
+	<color name="CountBottom">#f1f1f1</color>
+	<color name="CountText">#6b6b6b</color>
+	<color name="CountEdge">#d9d9d9</color>
 </resources>
