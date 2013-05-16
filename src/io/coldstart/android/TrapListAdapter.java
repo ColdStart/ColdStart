@@ -62,8 +62,8 @@ public class TrapListAdapter extends BaseAdapter
 		
 		//((TextView) convertView.findViewById(R.id.TopicName)).setTypeface(Typeface.createFromAsset(context.getAssets(), "fonts/d0.ttf"));
 		TextView hostname = ((TextView) convertView.findViewById(R.id.Hostname));
-		
-		hostname.setText(trap.Hostname);
+
+        hostname.setText(trap.Hostname);
 		
 		if(trap.read)
 		{
@@ -107,9 +107,12 @@ public class TrapListAdapter extends BaseAdapter
         {
             //e.printStackTrace();
         }
-		
+
 		((TextView) convertView.findViewById(R.id.TrapCount)).setText(Integer.toString(trap.trapCount));
-	
+
+        ((TextView) convertView.findViewById(R.id.TrapDate)).setTypeface(Typeface.createFromAsset((context).getAssets(), "fonts/MavenPro-Regular.ttf"));
+        ((TextView) convertView.findViewById(R.id.TrapCount)).setTypeface(Typeface.createFromAsset((context).getAssets(), "fonts/MavenPro-Regular.ttf"));
+        hostname.setTypeface(Typeface.createFromAsset((context).getAssets(), "fonts/MavenPro-Regular.ttf"));
 		return convertView;
 	}
 }

@@ -3,9 +3,9 @@
     
     <item android:id="@+id/GCMStatus" android:title="See GCM Status" android:showAsAction="always" android:icon="@drawable/ic_action_gcm_failed"></item>
     
-    <item android:id="@+id/ResolveAll" android:title="Acknowledge all Traps" android:showAsAction="always" android:icon="@drawable/ic_action_resolve_all"></item>
+    <!-- <item android:id="@+id/ResolveAll" android:title="Acknowledge all Traps" android:showAsAction="always" android:icon="@drawable/ic_action_resolve_all"></item> -->
     
-    <item android:id="@+id/Settings" android:title="Manage Settings" android:showAsAction="ifRoom" android:icon="@drawable/ic_action_settings"></item>
+    <item android:id="@+id/Settings" android:title="Manage Settings" android:showAsAction="never" android:icon="@drawable/ic_action_settings"></item>
     
-    <item android:id="@+id/SeeAPIKey" android:title="See API Key" android:showAsAction="always|withText" android:icon="@drawable/ic_action_apikey"></item>
+    <item android:id="@+id/SeeAPIKey" android:title="See Auth Key" android:showAsAction="always|withText" android:icon="@drawable/ic_action_apikey"></item>
 </menu>

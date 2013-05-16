@@ -135,7 +135,13 @@ public class TrapListFragment extends ListFragment
 
         setListAdapter(adapter);
 
-
+        if(mActivatedPosition != ListView.INVALID_POSITION)
+        {
+            Log.e("mActivatedPosition","Not invalid: " + Integer.toString(mActivatedPosition));
+            /*getListView().setSelection(mActivatedPosition);
+            adapter.notifyDataSetChanged();*/
+            getListView().setItemChecked(mActivatedPosition, true);
+        }
     }
 	@Override
 	public void onViewCreated(View view, Bundle savedInstanceState) 
@@ -199,6 +205,7 @@ public class TrapListFragment extends ListFragment
 		// fragment is attached to one) that an item has been selected.
 		//mCallbacks.onItemSelected(DummyContent.ITEMS.get(position).id);
 		mCallbacks.onItemSelected(listOfTraps.get(position));
+        mActivatedPosition = position;
 	}
 
 	@Override
