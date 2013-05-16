@@ -61,6 +61,7 @@ public class TrapListFragment extends ListFragment
 	 */
 	private int mActivatedPosition = ListView.INVALID_POSITION;
 
+    private String mSelectedHost = null;
 	/**
 	 * A callback interface that all activities containing this fragment must
 	 * implement. This mechanism allows activities to be notified of item
@@ -135,12 +136,22 @@ public class TrapListFragment extends ListFragment
 
         setListAdapter(adapter);
 
-        if(mActivatedPosition != ListView.INVALID_POSITION)
+        /*if(mActivatedPosition != ListView.INVALID_POSITION)
         {
             Log.e("mActivatedPosition","Not invalid: " + Integer.toString(mActivatedPosition));
-            /*getListView().setSelection(mActivatedPosition);
-            adapter.notifyDataSetChanged();*/
             getListView().setItemChecked(mActivatedPosition, true);
+        }*/
+
+        if(null != mSelectedHost)
+        {
+            int hostCount = listOfTraps.size();
+            for(int i = 0; i < hostCount; i++)
+            {
+                if(listOfTraps.get(i).Hostname.equals(mSelectedHost))
+                {
+                    getListView().setItemChecked(i, true);
+                }
+            }
         }
     }
 	@Override
@@ -205,7 +216,10 @@ public class TrapListFragment extends ListFragment
 		// fragment is attached to one) that an item has been selected.
 		//mCallbacks.onItemSelected(DummyContent.ITEMS.get(position).id);
 		mCallbacks.onItemSelected(listOfTraps.get(position));
-        mActivatedPosition = position;
+
+        //We want to keep track of this for our own purposes
+        //mActivatedPosition = position;
+        mSelectedHost = listOfTraps.get(position).Hostname;
 	}
 
 	@Override
