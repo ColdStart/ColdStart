@@ -32,7 +32,8 @@ public class API
 	public static int SYNC_VERSION = 1;
 	public static String SENDER_ID = "70012631542";
 	static int API_VERSION = 1;
-	
+    public static String BROADCAST_ACTION = "io.coldstart.android.broadcast.updateListUI";
+
 	DefaultHttpClient client;
   	ThreadSafeClientConnManager mgr;
   	DefaultHttpClient httpclient;

@@ -33,7 +33,8 @@
         android:paddingLeft="16dp"
         android:paddingTop="8dp"
         android:text="Medium Text"
-        android:textAppearance="?android:attr/textAppearanceSmall" />
+        android:textAppearance="?android:attr/textAppearanceSmall" android:maxLines="2" android:ellipsize="end"
+        android:paddingBottom="8dp"/>
 
     <TextView
         android:id="@+id/TrapDate"
@@ -46,7 +47,7 @@
         android:drawableLeft="@drawable/ic_event_time"
         android:gravity="center_vertical"
         android:paddingRight="8dp"
-        android:text="01/01/1970"
+        android:text="01/01/70"
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:textColor="@color/CountText" />
 

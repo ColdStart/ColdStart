@@ -5,11 +5,7 @@ import android.app.DialogFragment;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.app.backup.BackupManager;
-import android.content.ClipData;
-import android.content.ClipboardManager;
-import android.content.Context;
-import android.content.Intent;
-import android.content.SharedPreferences;
+import android.content.*;
 import android.os.Bundle;
 import android.os.Looper;
 import android.preference.PreferenceManager;
@@ -22,6 +18,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 
+import android.widget.Toast;
 import com.google.android.gcm.GCMRegistrar;
 
 /**
@@ -39,7 +36,8 @@ import com.google.android.gcm.GCMRegistrar;
  * This activity also implements the required {@link TrapListFragment.Callbacks}
  * interface to listen for item selections.
  */
-public class TrapListActivity extends FragmentActivity implements TrapListFragment.Callbacks {
+public class TrapListActivity extends FragmentActivity implements TrapListFragment.Callbacks
+{
 
 	/**
 	 * Whether or not the activity is in two-pane mode, i.e. running on a tablet
@@ -54,7 +52,7 @@ public class TrapListActivity extends FragmentActivity implements TrapListFragme
 	boolean gcmSuccess = false;
 	String securityID = "";
 	final static int DISPLAY_SETTINGS = 1;
-	
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) 
 	{
@@ -384,7 +382,7 @@ public class TrapListActivity extends FragmentActivity implements TrapListFragme
 			startActivity(detailIntent);
 		}
 	}
-	
+
 	public void ShowRegisterDialog() 
 	{
 		if(dialogFragment != null)

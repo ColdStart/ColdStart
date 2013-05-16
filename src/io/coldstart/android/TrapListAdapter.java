@@ -1,6 +1,9 @@
 package io.coldstart.android;
 import io.coldstart.android.R.color;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import android.annotation.SuppressLint;
@@ -67,29 +70,45 @@ public class TrapListAdapter extends BaseAdapter
 			hostname.setTypeface(Typeface.DEFAULT);
 		}
 		
-		((TextView) convertView.findViewById(R.id.IPAddress)).setText(trap.IP);
-		
-		((TextView) convertView.findViewById(R.id.TrapDate)).setText(trap.date);
+		//((TextView) convertView.findViewById(R.id.IPAddress)).setText(trap.IP);
+        ((TextView) convertView.findViewById(R.id.IPAddress)).setText(trap.trap);
+
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        Date trapDate = null;
+        try
+        {
+            trapDate = format.parse(trap.date.substring(0,10));
+            System.out.println(trapDate);
+        }
+        catch (Exception e)
+        {
+            // TODO Auto-generated catch block
+            //e.printStackTrace();
+        }
+
+        try
+        {
+            if(new Date().before(trapDate))
+            {
+                ((TextView) convertView.findViewById(R.id.TrapDate)).setText(
+                        trap.date.substring(8,10)
+                                + "/" +
+                                trap.date.substring(5,7)
+                                + "/" +
+                                trap.date.substring(2,4)
+                );
+            }
+            else
+            {
+                ((TextView) convertView.findViewById(R.id.TrapDate)).setText(trap.date.substring(11,19));
+            }
+        }
+        catch(Exception e)
+        {
+            //e.printStackTrace();
+        }
 		
 		((TextView) convertView.findViewById(R.id.TrapCount)).setText(Integer.toString(trap.trapCount));
-		
-		/*if(convertView.isActivated())
-		{
-			Log.e("Selected","I'm selected");
-			hostname.setTypeface(null, Typeface.BOLD);
-			hostname.setTextColor(Color.RED);
-			
-			if(Build.VERSION.SDK_INT >= 16)
-				hostname.setBackground(context.getResources().getDrawable(R.drawable.list_item_title_container_selected));
-		}
-		else
-		{
-			Log.e("Selected","I'm NOT selected");
-			hostname.setTypeface(null, Typeface.NORMAL);
-			
-			if(Build.VERSION.SDK_INT >= 16)
-				hostname.setBackground(context.getResources().getDrawable(R.drawable.list_item_title_container));
-		}*/
 	
 		return convertView;
 	}

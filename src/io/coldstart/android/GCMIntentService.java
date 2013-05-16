@@ -118,18 +118,22 @@ public class GCMIntentService extends com.google.android.gcm.GCMBaseIntentServic
 			{
 				SendCombinedNotification(alertCount);
 			}
-			
+
 			Trap trap = new Trap(hostname,IP);
 			trap.date = Date;
 			trap.uptime = Uptime;
 			
 			trap.trap = payloadDetails.toString();
 			
-			
 			datasource = new TrapsDataSource(this);
 		    datasource.open();
 		    datasource.addRecentTrap(trap);
 		    datasource.close();
+
+            //If the app is in the foreground we should instruct it to refresh
+            Intent broadcast = new Intent();
+            broadcast.setAction(API.BROADCAST_ACTION);
+            sendBroadcast(broadcast);
 		}
 		//1 = an indicative notification
 		else

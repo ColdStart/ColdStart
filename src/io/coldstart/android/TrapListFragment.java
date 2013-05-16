@@ -3,6 +3,10 @@ package io.coldstart.android;
 import java.util.List;
 
 import android.app.Activity;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
 import android.util.Log;
@@ -28,7 +32,18 @@ public class TrapListFragment extends ListFragment
 	TrapListAdapter adapter = null;
 	TrapsDataSource datasource = null;
 	public List<Trap> listOfTraps = null;
-	
+
+    private BroadcastReceiver receiver = new BroadcastReceiver()
+    {
+        @Override
+        public void onReceive(Context context, Intent intent)
+        {
+            Log.e("onRecieve","Got a broadcast");
+            //Toast.makeText(getApplicationContext(), "received", Toast.LENGTH_SHORT).show();
+            getData();
+        }
+    };
+
 	/**
 	 * The serialization (saved instance state) Bundle key representing the
 	 * activated item position. Only used on tablets.
@@ -87,18 +102,24 @@ public class TrapListFragment extends ListFragment
 	public void onCreate(Bundle savedInstanceState) 
 	{
 		super.onCreate(savedInstanceState);
-		
-		datasource = new TrapsDataSource(getActivity());
-		datasource.open();
-		
-		listOfTraps = datasource.getRecentTraps();
+        getData();
+
+	}
+
+    private void getData()
+    {
+        Log.i("getData","getting data");
+        datasource = new TrapsDataSource(getActivity());
+        datasource.open();
+
+        listOfTraps = datasource.getRecentTraps();
 
 		/*int trapSize = listOfTraps.size();
-		
+
 		for(int i = 0; i < trapSize; i++)
 		{
 			Trap test = listOfTraps.get(i);
-			
+
 			Log.e("trap","Hostname: " + test.Hostname + " / IP: " +  test.IP
 					+ " Date: " +  test.date
 					+ " ID: " +  test.trapID
@@ -106,15 +127,16 @@ public class TrapListFragment extends ListFragment
 					+ " Read: " +  test.read
 					+ " Payload: " +  test.trap);
 		}*/
-		
-		//Not sure why this is commented out
-		datasource.close();
-		
-		adapter = new TrapListAdapter(getActivity(),listOfTraps);
-		
-		setListAdapter(adapter);
-	}
 
+        //Not sure why this is commented out
+        datasource.close();
+
+        adapter = new TrapListAdapter(getActivity(),listOfTraps);
+
+        setListAdapter(adapter);
+
+
+    }
 	@Override
 	public void onViewCreated(View view, Bundle savedInstanceState) 
 	{
@@ -147,8 +169,27 @@ public class TrapListFragment extends ListFragment
 
 		// Reset the active callbacks interface to the dummy implementation.
 		mCallbacks = sDummyCallbacks;
+
+        //getActivity().unregisterReceiver(receiver);
 	}
 
+    @Override
+    public void onResume()
+    {
+        super.onResume();
+        Log.e("onResume","Registering broadcast");
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(API.BROADCAST_ACTION);
+        getActivity().registerReceiver(receiver, filter);
+    }
+
+    @Override
+    public void onPause()
+    {
+        super.onPause();
+        Log.e("onResume","UNregistering broadcast");
+        getActivity().unregisterReceiver(receiver);
+    }
 	@Override
 	public void onListItemClick(ListView listView, View view, int position, long id) 
 	{
