@@ -34,7 +34,8 @@
         android:paddingTop="8dp"
         android:text="Medium Text"
         android:textAppearance="?android:attr/textAppearanceSmall" android:maxLines="2" android:ellipsize="end"
-        android:paddingBottom="8dp" android:typeface="monospace"/>
+        android:paddingBottom="8dp" android:typeface="monospace"
+        android:paddingRight="8dp"/>
 
     <TextView
         android:id="@+id/TrapDate"

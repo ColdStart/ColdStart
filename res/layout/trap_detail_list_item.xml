@@ -37,6 +37,7 @@
         android:text="Medium Text"
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:ellipsize="end"
-        android:paddingBottom="8dp" android:typeface="monospace"/>
+        android:paddingBottom="8dp" android:typeface="monospace"
+        android:paddingRight="8dp"/>
 
 </RelativeLayout>
