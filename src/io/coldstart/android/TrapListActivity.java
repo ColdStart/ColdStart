@@ -181,11 +181,11 @@ public class TrapListActivity extends FragmentActivity implements TrapListFragme
 					if(api.updateGCMAccount(settings.getString("APIKey", ""), settings.getString("keyPassword", ""), GCMRegistrar.getRegistrationId(TrapListActivity.this), securityID))
 					{
 						Log.i("updateGCMAccount","Success");
-						
+
 						if(null != gcmStatus)
 						{
 							gcmSuccess = true;
-							
+
 							runOnUiThread(new Runnable() {
 							    public void run() {
 							    	gcmStatus.setIcon(R.drawable.ic_action_gcm_success);
@@ -270,6 +270,65 @@ public class TrapListActivity extends FragmentActivity implements TrapListFragme
 				subscribeToMessages();
 				return true;
 			}
+
+            case R.id.Logout:
+            {
+                new AlertDialog.Builder(this)
+                        .setIcon(android.R.drawable.ic_dialog_alert)
+                        .setTitle("Delete Traps for selected host?")
+                        .setMessage("Are you sure you want to logout?\nYou'll no longer receive any alerts, they won't be cached on the server and the app will close.")
+                        .setPositiveButton("Yes, Logout", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                Log.i("onOptionsItemSelected", "Logging Out");
+                                (new Thread() {
+                                    public void run()
+                                    {
+                                        API api = new API();
+
+                                        try
+                                        {
+                                            if(api.logoutGCMAccount(settings.getString("APIKey", ""), settings.getString("keyPassword", ""), securityID))
+                                            {
+                                               //We successfully logged out
+                                                runOnUiThread(new Runnable() {
+                                                    public void run() {
+                                                        gcmStatus.setIcon(R.drawable.ic_action_gcm_failed);
+                                                        Toast.makeText(getApplicationContext(),"Succesfully logged out. Tap the GCM icon or relaunch app to login again",Toast.LENGTH_SHORT).show();
+                                                    }
+                                                });
+                                            }
+                                            else
+                                            {
+                                                //TODO Popup to the user that there was a problem logging out
+                                                runOnUiThread(new Runnable() {
+                                                    public void run() {
+                                                        gcmStatus.setIcon(R.drawable.ic_action_gcm_failed);
+                                                        Toast.makeText(getApplicationContext(),"There was a problem logging out.",Toast.LENGTH_SHORT).show();
+                                                    }
+                                                });
+                                            }
+
+
+                                            runOnUiThread(new Runnable() {
+                                                public void run() {
+                                                    TrapListActivity.this.invalidateOptionsMenu();
+                                                }
+                                            });
+                                        }
+                                        catch(Exception e)
+                                        {
+                                            //TODO this is probably pretty bad!
+                                            e.printStackTrace();
+                                        }
+                                    }
+                                }).start();
+                            }
+                        })
+                        .setNegativeButton("No", null)
+                        .show();
+                return true;
+            }
 
 			case R.id.Settings:
 			{

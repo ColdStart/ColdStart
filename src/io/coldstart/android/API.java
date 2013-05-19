@@ -149,6 +149,52 @@ public class API
 			return false;
 		}
 	}
+
+
+    public boolean logoutGCMAccount(String APIKey, String Password, String deviceID) throws ClientProtocolException, IOException
+    {
+        HttpPost httpost = new HttpPost("http://api.coldstart.io/"+API.API_VERSION+"/logout");
+
+
+        List <NameValuePair> nvps = new ArrayList <NameValuePair>();
+        nvps.add(new BasicNameValuePair("version", Integer.toString(API.API_VERSION)));
+        nvps.add(new BasicNameValuePair("apikey", APIKey));
+        nvps.add(new BasicNameValuePair("deviceid", deviceID));
+
+        if(!Password.equals(""))
+            nvps.add(new BasicNameValuePair("password", API.md5(Password)));
+
+
+        httpost.setEntity(new UrlEncodedFormEntity(nvps, HTTP.UTF_8));
+
+        HttpResponse response = httpclient.execute(httpost);
+
+        String rawJSON = EntityUtils.toString(response.getEntity());
+        response.getEntity().consumeContent();
+
+        Log.i("APIKey",APIKey);
+        Log.i("Password", API.md5(Password));
+        Log.i("rawJSON",rawJSON);
+        try
+        {
+            JSONObject subscribeObject = new JSONObject(rawJSON);
+
+            if(subscribeObject.has("uuid"))
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        catch (JSONException e)
+        {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+            return false;
+        }
+    }
   	
   	
   	public boolean updateAccountSettings(String deviceID, boolean bundleAlerts, String bundleDelay) throws ClientProtocolException, IOException
