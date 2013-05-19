@@ -10,6 +10,7 @@ import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
 import android.util.Log;
+import android.view.DragEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -103,6 +104,8 @@ public class TrapListFragment extends ListFragment
 	public void onCreate(Bundle savedInstanceState) 
 	{
 		super.onCreate(savedInstanceState);
+
+        //((ListView) getListView()).setVerticalScrollbarPosition(View.SCROLLBAR_POSITION_LEFT);
         getData();
 
 	}
@@ -166,6 +169,7 @@ public class TrapListFragment extends ListFragment
 		}
 	}
 
+
 	@Override
 	public void onAttach(Activity activity) 
 	{
@@ -198,6 +202,8 @@ public class TrapListFragment extends ListFragment
         IntentFilter filter = new IntentFilter();
         filter.addAction(API.BROADCAST_ACTION);
         getActivity().registerReceiver(receiver, filter);
+
+        getData();
     }
 
     @Override
@@ -207,6 +213,7 @@ public class TrapListFragment extends ListFragment
         Log.e("onResume","UNregistering broadcast");
         getActivity().unregisterReceiver(receiver);
     }
+
 	@Override
 	public void onListItemClick(ListView listView, View view, int position, long id) 
 	{

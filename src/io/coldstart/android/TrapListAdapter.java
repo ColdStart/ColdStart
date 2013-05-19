@@ -83,7 +83,7 @@ public class TrapListAdapter extends BaseAdapter
         catch (Exception e)
         {
             // TODO Auto-generated catch block
-            //e.printStackTrace();
+            e.printStackTrace();
         }
 
         try

@@ -34,11 +34,10 @@ public class GCMIntentService extends com.google.android.gcm.GCMBaseIntentServic
 	@Override
 	protected void onMessage(Context arg0, Intent intent) 
 	{
-		
 		String ns = Context.NOTIFICATION_SERVICE;
 		mNM = (NotificationManager) arg0.getSystemService(ns);
 		
-		Log.e("GCMIntentService","onMessage");
+		Log.e("GCMIntentService","onMessageonMessageonMessageonMessage");
 		
 		//GCM Payload
 		String alertCount = intent.getExtras().getString("alertCount");
@@ -48,8 +47,8 @@ public class GCMIntentService extends com.google.android.gcm.GCMBaseIntentServic
 		String payloadJSON = intent.getExtras().getString("payload");
 		
 		//Stuff from the payload
-		String hostname = "---", TrapDetails = "---", IP = "", Date = "", Uptime = "";
-		JSONArray payloadDetails = null;
+		String hostname = "---", TrapDetails = "---", IP = "", Date = "", Uptime = "", payloadDetails = "Unknown payload";
+		//JSONArray payloadDetails = null;
 		
 		//0 = a single alert
 		if(alertType.equals("0"))
@@ -71,11 +70,13 @@ public class GCMIntentService extends com.google.android.gcm.GCMBaseIntentServic
 				
 				try
 				{
-					payloadDetails = payload.getJSONArray("trapdetails");
+					//payloadDetails = payload.getJSONArray("trapdetails");
+                    payloadDetails = payload.getString("trapdetails");
 				}
 				catch(Exception e)
 				{
-					payloadDetails = null;
+                    //e.printStackTrace();
+					payloadDetails = "Unknown Trap payload";
 				}
 				
 				try
@@ -107,7 +108,7 @@ public class GCMIntentService extends com.google.android.gcm.GCMBaseIntentServic
 			}
 			catch(Exception e)
 			{
-				e.printStackTrace();
+				//e.printStackTrace();
 			}
 			
 			if(Build.VERSION.SDK_INT >= 16)
@@ -123,7 +124,7 @@ public class GCMIntentService extends com.google.android.gcm.GCMBaseIntentServic
 			trap.date = Date;
 			trap.uptime = Uptime;
 			
-			trap.trap = payloadDetails.toString();
+			trap.trap = payloadDetails;
 			
 			datasource = new TrapsDataSource(this);
 		    datasource.open();
@@ -158,14 +159,15 @@ public class GCMIntentService extends com.google.android.gcm.GCMBaseIntentServic
 
 	
 	@TargetApi(Build.VERSION_CODES.JELLY_BEAN)
-	private void SendInboxStyleNotification(String alertCount, String alertTime, String hostname, JSONArray payloadDetails)
+	private void SendInboxStyleNotification(String alertCount, String alertTime, String hostname, String payloadDetails)
 	{
 		Uri uri= RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
 		
 		String Line1 = "", Line2 = "", Line3 = "", Line4 = "", Line5 = "";
-		
-		int payloadLength = payloadDetails.length();
-		for(int i = 0; i < payloadLength; i++)
+        String[] separatedLines = payloadDetails.split("\n");
+
+		int payloadLength = separatedLines.length;
+		for(int i = 0; i < payloadLength || i < 5; i++)
 		{
 			try
 			{
@@ -173,31 +175,31 @@ public class GCMIntentService extends com.google.android.gcm.GCMBaseIntentServic
 				{
 					case 0:
 					{
-						Line1 = payloadDetails.getString(i);
+						Line1 = separatedLines[i];
 					}
 					break;
 					
 					case 1:
 					{
-						Line2 = payloadDetails.getString(i);
+						Line2 = separatedLines[i];
 					}
 					break;
 					
 					case 2:
 					{
-						Line3 = payloadDetails.getString(i);
+						Line3 = separatedLines[i];
 					}
 					break;
 					
 					case 3:
 					{
-						Line4 = payloadDetails.getString(i);
+						Line4 = separatedLines[i];
 					}
 					break;
 					
 					case 4:
 					{
-						Line5 = payloadDetails.getString(i);
+						Line5 = separatedLines[i];
 					}
 					break;
 				}
@@ -218,9 +220,9 @@ public class GCMIntentService extends com.google.android.gcm.GCMBaseIntentServic
 			         .setSound(uri)
 			         .setTicker("New SNMP traps have been received")
 					 .setContentIntent(PendingIntent.getActivity(this, 0, new Intent(this, TrapListActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP).putExtra("forceRefresh", true), 0)))
-			      .setBigContentTitle(alertCount + " new SNMP traps")
+			      .setBigContentTitle("New SNMP traps have been received")
 			      .setSummaryText("Launch ColdStart.io to Manage These Events")
-			      .addLine(Line1).addLine(Line2).addLine(Line3).addLine(Line4).addLine(Line5)
+			      .addLine(Line1).addLine(Line2).addLine(Line3).addLine(Line4)
 			      .build();
 		
 		notification.defaults |= Notification.DEFAULT_SOUND;

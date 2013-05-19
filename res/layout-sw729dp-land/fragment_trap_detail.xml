@@ -1,0 +1,148 @@
+<RelativeLayout
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+
+    <TextView xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/hostname"
+        style="?android:attr/textAppearanceLarge"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp"
+        android:textIsSelectable="true"
+        tools:context=".TrapDetailFragment"
+        android:textSize="38dp"
+        android:text="Test Test Test"
+        android:textStyle="bold"
+        android:layout_alignParentRight="true" />
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="2dp"
+        android:background="@color/AlphaBlue"
+        android:layout_alignParentTop="false"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/hostname"
+        android:id="@+id/seperator"/>
+
+    <ListView
+        android:layout_width="480dp"
+        android:layout_height="fill_parent"
+        android:id="@+id/trap_list"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="8dp"
+        android:layout_below="@+id/seperator"
+        android:paddingTop="8dp"
+        android:clipToPadding="false"
+        android:dividerHeight="24dp"
+        android:divider="@android:drawable/divider_horizontal_dim_dark"
+        android:paddingRight="12dp"/>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_below="@+id/seperator"
+        android:layout_alignParentLeft="true"
+        android:layout_toLeftOf="@+id/trap_list">
+
+        <!-- IP Address -->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left|center_vertical"
+            android:padding="24dp">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/imageView"
+                android:layout_gravity="center"
+                android:src="@drawable/ic_ipaddress" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="255.255.255.255"
+                android:id="@+id/IPAddress"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="12dp" />
+        </LinearLayout>
+
+        <!-- Location -->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left|center_vertical"
+            android:padding="24dp">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/imageView"
+                android:layout_gravity="center"
+                android:src="@drawable/ic_location" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="Unknown Location"
+                android:id="@+id/Location"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="12dp" />
+        </LinearLayout>
+
+        <!-- IP Address -->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left|center_vertical"
+            android:padding="24dp">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/imageView"
+                android:layout_gravity="center"
+                android:src="@drawable/ic_contact" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="No Contact information"
+                android:id="@+id/Contact"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="12dp" />
+        </LinearLayout>
+
+        <!-- IP Address -->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left|center_vertical"
+            android:padding="24dp">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/imageView"
+                android:layout_gravity="center"
+                android:src="@drawable/ic_description" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="..."
+                android:id="@+id/Description"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="12dp" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+</RelativeLayout>

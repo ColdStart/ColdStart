@@ -54,6 +54,13 @@ public class TrapDetailActivity extends FragmentActivity
 		}
 	}
 
+    public void exitOnDelete()
+    {
+        Intent in = new Intent();
+        setResult(TrapDetailFragment.ARG_QUITONDELETE,in);
+        finish();
+    }
+
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) 
 	{

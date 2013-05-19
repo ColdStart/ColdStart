@@ -15,8 +15,8 @@ public class TrapsDataSource
 	private TrapsDBOpenHelper dbHelper;
 	private String[] allColumns = { "trapID","trapHostName","trapIP","trapDate","trapUptime","trapPayload","trapRead" };
 	private String[] allColumnswCount = { "trapID","trapHostName","trapIP","trapDate","trapUptime","trapPayload","trapRead","count(1) as trapCount" };
-	
-	public TrapsDataSource(Context context) 
+
+    public TrapsDataSource(Context context)
 	{
 		dbHelper = new TrapsDBOpenHelper(context);
 	}
@@ -65,13 +65,19 @@ public class TrapsDataSource
 		/*}*/
 	  }
 
-	  public void deleteComment(Trap trap) 
+	  public void deleteSingleTrap(Trap trap)
 	  {
 	    int id = trap.trapID;
 	    
 	    System.out.println("Comment deleted with id: " + id);
 	    database.delete(TrapsDBOpenHelper.TABLE_NAME, "trapID" + " = " + id, null);
 	  }
+
+    public void deleteHost(String IPAddress)
+    {
+        //System.out.println("Comment deleted with id: " + id);
+        database.delete(TrapsDBOpenHelper.TABLE_NAME, "trapIP" + " = \"" + IPAddress +"\"", null);
+    }
 
 	  public List<Trap> getRecentTraps() 
 	  {
@@ -104,7 +110,37 @@ public class TrapsDataSource
 	    	cursor.moveToNext();
 	    }
 	    // Make sure to close the cursor
-	    cursor.close();
+	    //cursor.close();
+        if (!cursor.isClosed() ||cursor != null)
+        {
+          cursor.close();
+          cursor=null;
+        }
 	    return recentTags;
 	  }
+
+    public List<Trap> getTrapsforHost(String IPAddress)
+    {
+        List<Trap> trapsFromHost = new ArrayList<Trap>();
+
+        //						 query(String table, 				String[] columns, 	String selection, 	            String[] selectionArgs, String groupBy, String having, String orderBy)
+        Cursor cursor = database.query(TrapsDBOpenHelper.TABLE_NAME, allColumns,  "trapIP = \""+IPAddress+"\"", 	null, 					null, 			null, 			"trapID DESC");
+
+        cursor.moveToFirst();
+
+        while (!cursor.isAfterLast())
+        {
+            Trap thisTrap =  new Trap(cursor,true);
+            trapsFromHost.add(thisTrap);
+            cursor.moveToNext();
+        }
+        // Make sure to close the cursor
+        //cursor.close();
+        if (!cursor.isClosed() ||cursor != null)
+        {
+            cursor.close();
+            cursor=null;
+        }
+        return trapsFromHost;
+    }
 }

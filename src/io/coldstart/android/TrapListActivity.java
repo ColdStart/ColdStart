@@ -1,9 +1,6 @@
 package io.coldstart.android;
 import android.R.menu;
-import android.app.ActionBar;
-import android.app.DialogFragment;
-import android.app.Fragment;
-import android.app.FragmentTransaction;
+import android.app.*;
 import android.app.backup.BackupManager;
 import android.content.*;
 import android.os.Bundle;
@@ -52,6 +49,11 @@ public class TrapListActivity extends FragmentActivity implements TrapListFragme
 	boolean gcmSuccess = false;
 	String securityID = "";
 	final static int DISPLAY_SETTINGS = 1;
+    final static int LAUNCHDETAILACTIVITY = 2;
+    boolean instantRefresh = false;
+
+    String selectedIP = "";
+    String selectedHost = "";
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) 
@@ -268,14 +270,14 @@ public class TrapListActivity extends FragmentActivity implements TrapListFragme
 				subscribeToMessages();
 				return true;
 			}
-			
+
 			case R.id.Settings:
 			{
 				Intent SettingsIntent = new Intent(TrapListActivity.this, SettingsFragment.class);
 				this.startActivityForResult(SettingsIntent, DISPLAY_SETTINGS);
 				return true;
 			}
-			
+
 			case R.id.SeeAPIKey:
 			{
 				/*ClipData clip = ClipData.newPlainText("ColdStart API Key",settings.getString("APIKey", ""));
@@ -309,6 +311,7 @@ public class TrapListActivity extends FragmentActivity implements TrapListFragme
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) 
 	{
+        Log.e("onActivityResult", "requestCode" + requestCode + " / resultCode" + resultCode);
 		//Check what the result was from the Settings Activity
 		switch(requestCode)
 		{
@@ -332,13 +335,24 @@ public class TrapListActivity extends FragmentActivity implements TrapListFragme
 							e.printStackTrace();
 						}
 					}
-		    	}).start();
+                    		    	}).start();
 			}
 			break;
+
+            //TODO remove as the onResume of the fragment handles the refresh
+            case LAUNCHDETAILACTIVITY:
+            {
+                if(resultCode == TrapDetailFragment.ARG_QUITONDELETE)
+                {
+                    /*Intent broadcast = new Intent();
+                    broadcast.setAction(API.BROADCAST_ACTION);
+                    sendBroadcast(broadcast);*/
+                }
+            }
+            break;
 		}
 	}
-	
-	
+
 	/**
 	 * Callback method from {@link TrapListFragment.Callbacks} indicating that
 	 * the item with the given ID was selected.
@@ -348,7 +362,9 @@ public class TrapListActivity extends FragmentActivity implements TrapListFragme
 	public void onItemSelected(Trap trap) 
 	{
 		//Trap trap = ((TrapListFragment) getFragmentManager().findFragmentByTag("dialog")).listOfTraps.get(location)
-				
+        selectedIP = trap.IP;
+        selectedHost = trap.Hostname;
+
 		if (mTwoPane) 
 		{
 			// In two-pane mode, show the detail view in this activity by
@@ -361,7 +377,8 @@ public class TrapListActivity extends FragmentActivity implements TrapListFragme
 			arguments.putString(TrapDetailFragment.ARG_TRAP, trap.trap);
 			arguments.putInt(TrapDetailFragment.ARG_TRAP_ID, trap.trapID);
 			arguments.putString(TrapDetailFragment.ARG_UPTIME, trap.uptime);
-			
+            arguments.putBoolean(TrapDetailFragment.ARG_2PANE, true);
+
 			TrapDetailFragment fragment = new TrapDetailFragment();
 			fragment.setArguments(arguments);
 			getSupportFragmentManager().beginTransaction().replace(R.id.trap_detail_container, fragment).commit();
@@ -378,8 +395,9 @@ public class TrapListActivity extends FragmentActivity implements TrapListFragme
 			detailIntent.putExtra(TrapDetailFragment.ARG_TRAP, trap.trap);
 			detailIntent.putExtra(TrapDetailFragment.ARG_TRAP_ID, trap.trapID);
 			detailIntent.putExtra(TrapDetailFragment.ARG_UPTIME, trap.uptime);
-			
-			startActivity(detailIntent);
+            detailIntent.putExtra(TrapDetailFragment.ARG_2PANE, false);
+
+            startActivityForResult(detailIntent,LAUNCHDETAILACTIVITY);
 		}
 	}
 

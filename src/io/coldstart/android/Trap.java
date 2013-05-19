@@ -44,6 +44,7 @@ public class Trap implements Parcelable
 		this.uptime = cursor.getString(4);
 		this.trap = cursor.getString(5);
 		int read = cursor.getInt(6);
+
 		if(read == 0)
 		{
 			this.read = false;
@@ -64,5 +65,26 @@ public class Trap implements Parcelable
 			e.printStackTrace();
 		}
 	}
+
+    public Trap(Cursor cursor, boolean noCount)
+    {
+        //{ "trapID","trapHostName","trapIP","trapDate","trapUptime","trapPayload","trapRead" };
+        this.trapID = cursor.getInt(0);
+        this.Hostname = cursor.getString(1);
+        this.IP = cursor.getString(2);
+        this.date = cursor.getString(3);
+        this.uptime = cursor.getString(4);
+        this.trap = cursor.getString(5);
+        int read = cursor.getInt(6);
+
+        if(read == 0)
+        {
+            this.read = false;
+        }
+        else
+        {
+            this.read = true;
+        }
+    }
 
 }

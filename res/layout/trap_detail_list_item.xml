@@ -1,0 +1,42 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:layout_marginTop="12dp"
+    android:background="@drawable/list_item_container"
+    android:minWidth="380dp"
+    android:paddingBottom="8dp">
+
+    <TextView
+        android:id="@+id/TrapDate"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:layout_margin="1dp"
+        android:background="@drawable/list_item_detail_title_container"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:paddingLeft="8dp"
+        android:text="Large Text"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="@color/OffWhite"
+        android:textStyle="bold"
+        android:drawableLeft="@drawable/ic_action_event_time_light"
+        android:gravity="center_vertical"/>
+
+    <TextView
+        android:id="@+id/TrapDetail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/TrapDate"
+        android:paddingLeft="16dp"
+        android:paddingTop="8dp"
+        android:text="Medium Text"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:ellipsize="end"
+        android:paddingBottom="8dp" android:typeface="monospace"/>
+
+</RelativeLayout>
