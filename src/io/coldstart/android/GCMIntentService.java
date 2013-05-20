@@ -1,5 +1,6 @@
 package io.coldstart.android;
 
+import android.widget.Toast;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -136,6 +137,11 @@ public class GCMIntentService extends com.google.android.gcm.GCMBaseIntentServic
             broadcast.setAction(API.BROADCAST_ACTION);
             sendBroadcast(broadcast);
 		}
+        //4 = rate limit hit
+        else if(alertType.equals("4"))
+        {
+           Log.e("Rate Limit","Rate limit hit");
+        }
 		//1 = an indicative notification
 		else
 		{
@@ -167,7 +173,10 @@ public class GCMIntentService extends com.google.android.gcm.GCMBaseIntentServic
         String[] separatedLines = payloadDetails.split("\n");
 
 		int payloadLength = separatedLines.length;
-		for(int i = 0; i < payloadLength || i < 5; i++)
+        if(payloadLength > 5)
+            payloadLength = 5;
+
+		for(int i = 0; i < payloadLength; i++)
 		{
 			try
 			{

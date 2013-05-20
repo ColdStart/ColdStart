@@ -2,12 +2,10 @@ package io.coldstart.android;
 
 import android.app.AlertDialog;
 import android.app.FragmentTransaction;
-import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
+import android.content.*;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.*;
@@ -170,12 +168,6 @@ public class TrapDetailFragment extends Fragment
     {
         switch (item.getItemId())
         {
-            case R.id.ImportSNMP:
-            {
-                Log.e("onOptionsItemSelected", "Importing SNMP");
-                return true;
-            }
-
             case R.id.DeleteTraps:
             {
                 new AlertDialog.Builder(getActivity())
@@ -193,8 +185,7 @@ public class TrapDetailFragment extends Fragment
                                         datasource.deleteHost(ipaddr);
                                         datasource.close();
 
-                                        if(twoPane)
-                                        {
+                                        if (twoPane) {
                                             Intent broadcast = new Intent();
                                             broadcast.setAction(API.BROADCAST_ACTION);
                                             getActivity().sendBroadcast(broadcast);
@@ -205,9 +196,7 @@ public class TrapDetailFragment extends Fragment
                                             PendingDeleteFragment fragment = new PendingDeleteFragment();
                                             fragment.setArguments(arguments);
                                             getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.trap_detail_container, fragment).commit();
-                                        }
-                                        else
-                                        {
+                                        } else {
                                             ((TrapDetailActivity) getActivity()).exitOnDelete();
                                         }
                                     }
@@ -219,7 +208,106 @@ public class TrapDetailFragment extends Fragment
 
                 return true;
             }
-        }
+
+            case R.id.ImportSNMP:
+            {
+                Log.e("onOptionsItemSelected", "Importing SNMP");
+
+                new AlertDialog.Builder(getActivity())
+                        .setIcon(android.R.drawable.ic_dialog_alert)
+                        .setTitle("Poll Host for SNMP Agent Details")
+                        .setMessage("Scans " + hostname + " from the ColdStart servers [ 89.151.79.202 ] using your SNMP community to get the location, description etc.\n\nEnsure that the relevant firewall ports / permissions are configured.")
+                        .setPositiveButton("Yes, Scan", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                Log.i("onOptionsItemSelected", "Scanning");
+                                (new Thread() {
+                                    public void run() {
+                                        SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(getActivity());
+
+                                        try {
+                                            API api = new API();
+
+                                            final ColdStartHost host = api.scanRemoteHost(settings.getString("APIKey", ""), hostname);
+
+                                            if(host.Error)
+                                            {
+                                                getActivity().runOnUiThread(new Runnable() {
+                                                    public void run() {
+                                                        Toast.makeText(getActivity(), host.ErrorMsg, Toast.LENGTH_SHORT).show();
+                                                    }
+                                                });
+                                            }
+                                            else
+                                            {
+                                                datasource = new TrapsDataSource(getActivity());
+                                                datasource.open();
+                                                datasource.addHostDetails(host);
+                                            }
+
+
+                                            //TODO actually update the UI
+
+                                        }
+                                        catch (Exception e)
+                                        {
+                                            e.printStackTrace();
+                                            getActivity().runOnUiThread(new Runnable() {
+                                                public void run() {
+                                                    Toast.makeText(getActivity(), "There was an internal error when trying to do the scan", Toast.LENGTH_SHORT).show();
+                                                }
+                                            });
+                                        }
+                                        finally
+                                        {
+                                            try
+                                            {
+                                                datasource.close();
+                                            }
+                                            catch(Exception e)
+                                            {
+                                                e.printStackTrace();
+                                            }
+                                        }
+
+
+                                        /*if (twoPane)
+                                        {
+                                            Intent broadcast = new Intent();
+                                            broadcast.setAction(API.BROADCAST_ACTION);
+                                            getActivity().sendBroadcast(broadcast);
+
+                                            Bundle arguments = new Bundle();
+                                            arguments.putString(TrapDetailFragment.ARG_HOSTNAME, hostname);
+
+                                            PendingDeleteFragment fragment = new PendingDeleteFragment();
+                                            fragment.setArguments(arguments);
+                                            getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.trap_detail_container, fragment).commit();
+                                        } else
+                                        {
+                                            ((TrapDetailActivity) getActivity()).exitOnDelete();
+                                        }*/
+                                        }
+                                    }
+
+                                    ).
+
+                                    start();
+                                }
+                            }
+
+                            )
+                                    .
+
+                            setNegativeButton("No",null)
+
+                            .
+
+                            show();
+
+                            return true;
+                        }
+            }
 
         return false;
     }

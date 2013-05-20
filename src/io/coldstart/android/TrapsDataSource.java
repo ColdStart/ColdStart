@@ -13,8 +13,8 @@ public class TrapsDataSource
 {
 	private SQLiteDatabase database;
 	private TrapsDBOpenHelper dbHelper;
-	private String[] allColumns = { "trapID","trapHostName","trapIP","trapDate","trapUptime","trapPayload","trapRead" };
-	private String[] allColumnswCount = { "trapID","trapHostName","trapIP","trapDate","trapUptime","trapPayload","trapRead","count(1) as trapCount" };
+	private String[] trapAllColumns = { "trapID","trapHostName","trapIP","trapDate","trapUptime","trapPayload","trapRead" };
+	private String[] trapAllColumnswCount = { "trapID","trapHostName","trapIP","trapDate","trapUptime","trapPayload","trapRead","count(1) as trapCount" };
 
     public TrapsDataSource(Context context)
 	{
@@ -33,37 +33,50 @@ public class TrapsDataSource
 	
 	public boolean addRecentTrap(Trap trap) 
 	  {
-		/*Cursor cursor = database.query(TrapsDBOpenHelper.TABLE_NAME, new String[] { "trapID" }, "trapID = " + Integer.toString(trap.trapID), null, null, null, null);
-		
-		if(cursor.getCount() > 0)
-		{
-			cursor.close();
-			return false;
-		}
-		else
-		{*/
-			ContentValues values = new ContentValues();
-			
-			values.put("trapHostName",trap.Hostname);
-			values.put("trapIP",trap.IP);
-			values.put("trapDate",trap.date);
-			values.put("trapUptime",trap.uptime);
-			values.put("trapPayload",trap.trap);
-			values.put("trapRead",trap.read);
+        ContentValues values = new ContentValues();
 
-			
-			long insertId = database.insert(TrapsDBOpenHelper.TABLE_NAME, null, values);
-			
-			if(insertId > -1)
-			{
-				return true;
-			}
-			else
-			{
-				return false;
-			}
-		/*}*/
+        values.put("trapHostName",trap.Hostname);
+        values.put("trapIP",trap.IP);
+        values.put("trapDate",trap.date);
+        values.put("trapUptime",trap.uptime);
+        values.put("trapPayload",trap.trap);
+        values.put("trapRead",trap.read);
+
+
+        long insertId = database.insert(TrapsDBOpenHelper.TABLE_NAME, null, values);
+
+        if(insertId > -1)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
 	  }
+
+    public boolean addHostDetails(ColdStartHost host)
+    {
+        ContentValues values = new ContentValues();
+
+        values.put("HostName",host.HostName);
+        values.put("IP",host.IP);
+        values.put("Location",host.Location);
+        values.put("Contact",host.Contact);
+        values.put("Description",host.Description);
+
+
+        long insertId = database.insert("host_details", null, values);
+
+        if(insertId > -1)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
 
 	  public void deleteSingleTrap(Trap trap)
 	  {
@@ -77,6 +90,7 @@ public class TrapsDataSource
     {
         //System.out.println("Comment deleted with id: " + id);
         database.delete(TrapsDBOpenHelper.TABLE_NAME, "trapIP" + " = \"" + IPAddress +"\"", null);
+        database.delete("host_details", "IP" + " = \"" + IPAddress +"\"", null);
     }
 
 	  public List<Trap> getRecentTraps() 
@@ -99,7 +113,7 @@ public class TrapsDataSource
 	    
 	    //"trapID","trapHostName","trapIP","trapDate","trapUptime","trapPayload","trapRead"
 	    //						 query(String table, 				String[] columns, 	String selection, 	String[] selectionArgs, String groupBy, String having, String orderBy)
-	    Cursor cursor = database.query(TrapsDBOpenHelper.TABLE_NAME, allColumnswCount, 		null, 				null, 					"trapIP", 			null, 			"trapID DESC");
+	    Cursor cursor = database.query(TrapsDBOpenHelper.TABLE_NAME, trapAllColumnswCount, 		null, 				null, 					"trapIP", 			null, 			"trapID DESC");
 
 	    cursor.moveToFirst();
 	    
@@ -124,7 +138,7 @@ public class TrapsDataSource
         List<Trap> trapsFromHost = new ArrayList<Trap>();
 
         //						 query(String table, 				String[] columns, 	String selection, 	            String[] selectionArgs, String groupBy, String having, String orderBy)
-        Cursor cursor = database.query(TrapsDBOpenHelper.TABLE_NAME, allColumns,  "trapIP = \""+IPAddress+"\"", 	null, 					null, 			null, 			"trapID DESC");
+        Cursor cursor = database.query(TrapsDBOpenHelper.TABLE_NAME, trapAllColumns,  "trapIP = \""+IPAddress+"\"", 	null, 					null, 			null, 			"trapID DESC");
 
         cursor.moveToFirst();
 

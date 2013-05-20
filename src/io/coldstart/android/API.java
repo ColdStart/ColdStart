@@ -150,6 +150,52 @@ public class API
 		}
 	}
 
+    public ColdStartHost scanRemoteHost(String APIKey, String remoteHost) throws ClientProtocolException, IOException
+    {
+        ColdStartHost host = new ColdStartHost();
+
+        HttpPost httpost = new HttpPost("http://api.coldstart.io/"+API.API_VERSION+"/scan");
+
+
+        List <NameValuePair> nvps = new ArrayList <NameValuePair>();
+        nvps.add(new BasicNameValuePair("version", Integer.toString(API.API_VERSION)));
+        nvps.add(new BasicNameValuePair("apikey", APIKey));
+        nvps.add(new BasicNameValuePair("remotehost", remoteHost));
+
+        httpost.setEntity(new UrlEncodedFormEntity(nvps, HTTP.UTF_8));
+
+        HttpResponse response = httpclient.execute(httpost);
+
+        String rawJSON = EntityUtils.toString(response.getEntity());
+        response.getEntity().consumeContent();
+
+        Log.i("rawJSON",rawJSON);
+        try
+        {
+            JSONObject scanObject = new JSONObject(rawJSON);
+
+            if(scanObject.has("success") && scanObject.getBoolean("success"))
+            {
+                host.Contact = scanObject.getString("contact");
+                host.Location = scanObject.getString("location");
+                host.Description = scanObject.getString("description");
+                host.Error = false;
+                return host;
+            }
+            else
+            {
+                host.ErrorMsg = scanObject.getString("error");
+                host.Error = true;
+                return host;
+            }
+        }
+        catch (JSONException e)
+        {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+            return null;
+        }
+    }
 
     public boolean logoutGCMAccount(String APIKey, String Password, String deviceID) throws ClientProtocolException, IOException
     {
