@@ -38,8 +38,19 @@
         </receiver>
 
         <service android:name=".GCMIntentService" />
-        
-        
+
+        <receiver android:name=".BatchDownloadReceiver" >
+            <intent-filter>
+                <action android:name="io.coldstart.android.broadcast.batchdownload" />
+            </intent-filter>
+        </receiver>
+
+        <receiver android:name=".BatchIgnoreReceiver" >
+            <intent-filter>
+                <action android:name="io.coldstart.android.broadcast.batchignore" />
+            </intent-filter>
+        </receiver>
+
         <activity
             android:name="io.coldstart.android.TrapListActivity"
             android:label="@string/app_name" >

@@ -22,6 +22,7 @@ import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.params.HttpParams;
 import org.apache.http.protocol.HTTP;
 import org.apache.http.util.EntityUtils;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -149,6 +150,125 @@ public class API
 			return false;
 		}
 	}
+
+    public boolean ignoreBatch(String APIKey, String Password, String deviceID) throws ClientProtocolException, IOException
+{
+    HttpPost httpost = new HttpPost("http://api.coldstart.io/"+API.API_VERSION+"/ignore");
+
+
+    List <NameValuePair> nvps = new ArrayList <NameValuePair>();
+    nvps.add(new BasicNameValuePair("version", Integer.toString(API.API_VERSION)));
+    nvps.add(new BasicNameValuePair("apikey", APIKey));
+    nvps.add(new BasicNameValuePair("deviceid", deviceID));
+
+    if(!Password.equals(""))
+        nvps.add(new BasicNameValuePair("password", API.md5(Password)));
+
+
+    httpost.setEntity(new UrlEncodedFormEntity(nvps, HTTP.UTF_8));
+
+    HttpResponse response = httpclient.execute(httpost);
+
+    String rawJSON = EntityUtils.toString(response.getEntity());
+    response.getEntity().consumeContent();
+
+    Log.i("APIKey",APIKey);
+    Log.i("Password", API.md5(Password));
+    Log.i("rawJSON",rawJSON);
+    try
+    {
+        JSONObject ignoreObject = new JSONObject(rawJSON);
+
+        if(ignoreObject.has("success") && ignoreObject.getBoolean("success"))
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+    catch (JSONException e)
+    {
+        // TODO Auto-generated catch block
+        e.printStackTrace();
+        return false;
+    }
+}
+
+    public List<Trap> getBatch(String APIKey, String Password, String deviceID) throws ClientProtocolException, IOException
+    {
+        HttpPost httpost = new HttpPost("http://api.coldstart.io/"+API.API_VERSION+"/batch");
+
+
+        List <NameValuePair> nvps = new ArrayList <NameValuePair>();
+        nvps.add(new BasicNameValuePair("version", Integer.toString(API.API_VERSION)));
+        nvps.add(new BasicNameValuePair("apikey", APIKey));
+        nvps.add(new BasicNameValuePair("deviceid", deviceID));
+
+        if(!Password.equals(""))
+            nvps.add(new BasicNameValuePair("password", API.md5(Password)));
+
+        httpost.setEntity(new UrlEncodedFormEntity(nvps, HTTP.UTF_8));
+
+        HttpResponse response = httpclient.execute(httpost);
+
+        String rawJSON = EntityUtils.toString(response.getEntity());
+        response.getEntity().consumeContent();
+
+        Log.i("APIKey",APIKey);
+        Log.i("Password", API.md5(Password));
+        Log.i("rawJSON",rawJSON);
+        List<Trap> returnTraps = new ArrayList<Trap>();
+
+        try
+        {
+            JSONObject batchesObject = new JSONObject(rawJSON);
+
+            if(batchesObject.has("success") && batchesObject.getBoolean("success"))
+            {
+                JSONArray jsonTraps = batchesObject.getJSONArray("traps");
+                int i = jsonTraps.length();
+
+                for(int x = 0; x < i; x++)
+                {
+                    try
+                    {
+                        JSONObject jsonTrap = jsonTraps.getJSONObject(x);
+                        Trap trap = new Trap(jsonTrap.getString("hostname"),jsonTrap.getString("ip"));
+                        trap.trap = jsonTrap.getString("payload");
+                        trap.date = jsonTrap.getString("date");
+                        returnTraps.add(trap);
+                    }
+                    catch(Exception e)
+                    {
+                        e.printStackTrace();
+                    }
+                }
+
+                if(returnTraps.isEmpty())
+                {
+                    Log.e("getBatch","List<Trap> object was empty");
+                    return null;
+                }
+                else
+                {
+                    return returnTraps;
+                }
+            }
+            else
+            {
+                Log.e("getBatch","json fetched wasn't successful");
+                return null;
+            }
+        }
+        catch (JSONException e)
+        {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+            return null;
+        }
+    }
 
     public ColdStartHost scanRemoteHost(String APIKey, String remoteHost) throws ClientProtocolException, IOException
     {

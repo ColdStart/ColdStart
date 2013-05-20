@@ -141,6 +141,8 @@ public class GCMIntentService extends com.google.android.gcm.GCMBaseIntentServic
         else if(alertType.equals("4"))
         {
            Log.e("Rate Limit","Rate limit hit");
+            sendRateLimitNotification(intent.getExtras().getString("ratelimit"));
+
         }
 		//1 = an indicative notification
 		else
@@ -163,7 +165,69 @@ public class GCMIntentService extends com.google.android.gcm.GCMBaseIntentServic
 		Log.e("GCMIntentService","onUnregistered");
 	}
 
-	
+
+    private void sendRateLimitNotification(String rateLimitCount)
+    {
+        if(null == rateLimitCount)
+            rateLimitCount = "0";
+
+        Intent intent = new Intent(this, TrapListActivity.class);
+        intent.putExtra("forceDownload",true);
+        PendingIntent pIntent = PendingIntent.getActivity(this, 0, intent, 0);
+
+        Intent broadcastDownload = new Intent();
+        broadcastDownload.setAction(BatchDownloadReceiver.BROADCAST_ACTION);
+        PendingIntent pBroadcastDownload = PendingIntent.getBroadcast(this,0,broadcastDownload,0);
+
+        Intent broadcastIgnore = new Intent();
+        broadcastIgnore.setAction(BatchIgnoreReceiver.BROADCAST_ACTION);
+        PendingIntent pBroadcastIgnore = PendingIntent.getBroadcast(this,0,broadcastIgnore,0);
+
+        Uri uri= RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+
+        Notification notification = null;
+
+        if(Build.VERSION.SDK_INT >= 16)
+        {
+            notification = new Notification.InboxStyle(
+                    new Notification.Builder(this)
+                            .setContentTitle("Inbound Traps have been rate limited")
+                            .setContentText("\"The number of traps being relayed to your phone has breeched the rate limit.")
+                            .setSmallIcon(R.drawable.ic_stat_ratelimit)
+                            .setVibrate(new long[] {0,100,200,300})
+                            .setAutoCancel(true)
+                            .setSound(uri)
+                            .setTicker("Inbound Traps have been rate limited")
+                            .addAction(R.drawable.ic_download_batch, "Get Batched Traps", pBroadcastDownload)
+                            .addAction(R.drawable.ic_ignore, "Ignore Batch", pBroadcastIgnore))
+                    .setBigContentTitle("Inbound Traps have been rate limited")
+                    .setSummaryText("Launch ColdStart.io to Manage These Events")
+                    .addLine("The number of traps relayed to you has breeched the rate limit.")
+                    .addLine("The current number of items queued is " + rateLimitCount)
+                    .addLine(" ")
+                    .addLine("Tap \"Get Batched Traps\" to download the cached traps")
+                    .addLine("Tap \"Ignore Batch\" to delete them from the server.")
+
+                    .build();
+        }
+        else
+        {
+            notification = new Notification.Builder(this)
+                .setContentTitle("Inbound Traps have been rate limited")
+                .setContentText("The number of traps being relayed to your phone has breeched the rate limit. The current number of items queued is " + rateLimitCount +
+                        "\nTap \"Get Alerts\" to batch download the outstanding traps or tap \"Ignore\" to delete them from the server.")
+                .setSmallIcon(R.drawable.ic_stat_ratelimit)
+                .setContentIntent(pIntent)
+                .setVibrate(new long[] {0,100,200,300})
+                .setAutoCancel(true)
+                .setSound(uri).build();
+        }
+
+        NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+
+        notificationManager.notify(43524, notification);
+    }
+
 	@TargetApi(Build.VERSION_CODES.JELLY_BEAN)
 	private void SendInboxStyleNotification(String alertCount, String alertTime, String hostname, String payloadDetails)
 	{
