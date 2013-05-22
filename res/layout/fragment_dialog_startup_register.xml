@@ -13,7 +13,7 @@
         android:layout_marginRight="12dp"
         android:layout_marginTop="8dp"
         android:ems="10"
-        android:hint="Email Address [optional]"
+        android:hint="@string/registerEmailEditText"
         android:inputType="textEmailAddress" />
 
     <EditText
@@ -25,7 +25,7 @@
         android:layout_below="@+id/emailAddress"
         android:layout_marginTop="12dp"
         android:ems="10"
-        android:hint="Password [optional]"
+        android:hint="@string/registerPasswordEditText"
         android:inputType="textPassword" >
 
         <requestFocus />

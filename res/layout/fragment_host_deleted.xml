@@ -17,7 +17,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text=" has been deleted from the local database."
+        android:text="@string/hostDeletedMessage"
         android:id="@+id/textView2"
         android:layout_gravity="center"/>
 </LinearLayout>

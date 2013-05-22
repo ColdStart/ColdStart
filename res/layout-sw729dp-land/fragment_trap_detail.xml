@@ -89,7 +89,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceLarge"
-                android:text="Unknown Location"
+                android:text="@string/locationLabel"
                 android:id="@+id/Location"
                 android:layout_gravity="center_vertical"
                 android:layout_marginLeft="12dp" />
@@ -113,7 +113,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceLarge"
-                android:text="No Contact information"
+                android:text="@string/contactLabel"
                 android:id="@+id/Contact"
                 android:layout_gravity="center_vertical"
                 android:layout_marginLeft="12dp" />
@@ -137,7 +137,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceLarge"
-                android:text="..."
+                android:text="@string/descriptionLabel"
                 android:id="@+id/Description"
                 android:layout_gravity="center_vertical"
                 android:layout_marginLeft="12dp" />

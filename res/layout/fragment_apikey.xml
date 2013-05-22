@@ -24,6 +24,6 @@
         android:layout_below="@+id/APIKeyLabel"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="16dp"
-        android:text="Close" />
+        android:text="@string/buttonClose" />
 
 </RelativeLayout>

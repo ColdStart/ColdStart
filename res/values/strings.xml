@@ -6,12 +6,43 @@
 
     <!-- Register Dialogs -->
     <string name="register_description">Click on \"Get API Key\" to get the string you can use as your SNMP community string. API Keys can be protected with a password ensuring that only those with the password will receive alerts sent using the API key as the SNMP community.\n\nAdding an email address allows you to request a password reset.\n\nBoth are optional.</string>
-    
-    
-    
-    
-    
+    <string name="registerPasswordEditText">Password [Optional]</string>
+    <string name="registerEmailEditText">Email Address [Optional]</string>
+
+    <!-- fragment_dialog_startup_login -->
+    <string name="apiKeyEditText">ColdStart Auth Key</string>
+    <string name="passwordEditText">Password (if set)</string>
+    <string name="buttonLogin">Login</string>
+
+
+
+
+    <!-- Fragment API Key -->
+    <string name="buttonClose">Close</string>
+
+    <!-- fragment_host_deleted -->
+    <string name="hostDeletedMessage"> has been deleted from the local database.</string>
+
+    <!-- Fragment Trap Detail (Tablet) -->
+    <string name="locationLabel">Unknown Location</string>
+    <string name="contactLabel">No contact information</string>
+    <string name="descriptionLabel">&#8230;</string>
+
+    <!-- Menus -->
+    <string name="menuGCMStatus">See GCM Status</string>
+    <string name="menuAuthKey">See Auth Key</string>
+    <string name="menuSettings">Manage Settings</string>
+    <string name="menuLogout">Logout (Stops alerts)</string>
+    <string name="menuImportSNMP">SNMP Walk for system details</string>
+    <string name="menuDeleteTraps">Delete Traps for this host</string>
+
     <!-- Preferences -->
+    <string name="prefBundleCategoryTitle">Alert Bundling</string>
+    <string name="prefBundleTitle">Enable Alert Bundling</string>
+    <string name="prefBundleDesc">Allows ColdStart to bundle traps together to reduce alert bursting</string>
+    <string name="prefBundleDelayDialogTitle">Delay in seconds before trap relay</string>
+    <string name="prefBundleDelayTitle">Bundling Delay</string>
+    <string name="prefBundleDelayDesc">Maximum delay before trap alerts are relayed</string>
     <string-array name="BackgroundServiceDelay_preference">
         <item>30 Seconds</item>
         <item>1 Minute</item>
@@ -22,7 +53,6 @@
         <item>30 Minutes</item>
         <item>1 Hour</item>
     </string-array>
-    
     <string-array name="BackgroundServiceDelay_preference_values">
         <item>30</item>
         <item>60</item>

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
-    <item android:id="@+id/ImportSNMP" android:title="SNMP Walk for system details" android:showAsAction="always" android:icon="@drawable/ic_action_snmp_import"></item>
-    <item android:id="@+id/DeleteTraps" android:title="Delete Traps for this host" android:showAsAction="ifRoom" android:icon="@drawable/ic_action_delete_traps"></item>
+    <item android:id="@+id/ImportSNMP" android:title="@string/menuImportSNMP" android:showAsAction="always" android:icon="@drawable/ic_action_snmp_import"></item>
+    <item android:id="@+id/DeleteTraps" android:title="@string/menuDeleteTraps" android:showAsAction="ifRoom" android:icon="@drawable/ic_action_delete_traps"></item>
 </menu>

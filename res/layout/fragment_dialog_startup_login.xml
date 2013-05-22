@@ -11,7 +11,7 @@
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:ems="10"
-        android:hint="ColdStart API Key"
+        android:hint="@string/apiKeyEditText"
         android:inputType="textPersonName" >
 
         <requestFocus />
@@ -24,7 +24,7 @@
         android:layout_below="@+id/APIKey"
         android:layout_centerHorizontal="true"
         android:ems="10"
-        android:hint="Password (if set)"
+        android:hint="@string/passwordEditText"
         android:inputType="textPassword" />
 
     <ProgressBar
@@ -43,6 +43,6 @@
         android:layout_alignRight="@+id/keyPassword"
         android:layout_below="@+id/keyPassword"
         android:layout_marginTop="12dp"
-        android:text="Login" />
+        android:text="@string/buttonLogin" />
 
 </RelativeLayout>

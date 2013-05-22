@@ -1,24 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
     
-    <PreferenceCategory android:title="Alert Bundling">
+    <PreferenceCategory android:title="@string/prefBundleCategoryTitle">
 
         <CheckBoxPreference
 	        android:key="allowBundling"
-	        android:title="Enable Alert Bundling"
-	        android:summary="Allows ColdStart to bundle traps together to reduce alert bursting"
+	        android:title="@string/prefBundleTitle"
+	        android:summary="@string/prefBundleTitle"
 	        android:defaultValue="false"
 		/>
         
         <ListPreference
 			android:key="bundleDelay"
 			android:dependency="allowBundling"
-			android:title="Bundling Delay"
-			android:summary="Maximum delay before trap alerts are relayed"
+			android:title="@string/prefBundleDelayTitle"
+			android:summary="@string/prefBundleDelayDesc"
 			android:entries="@array/BackgroundServiceDelay_preference"
 			android:entryValues="@array/BackgroundServiceDelay_preference_values"
 			android:defaultValue="30"
-			android:dialogTitle="Delay in seconds before trap relay"
+			android:dialogTitle="@string/prefBundleDelayDialogTitle"
 		/>
 
     </PreferenceCategory>
