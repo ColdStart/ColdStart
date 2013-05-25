@@ -87,9 +87,18 @@ public class TrapListAdapter extends BaseAdapter
 		{
 			hostname.setTypeface(Typeface.DEFAULT);
 		}
-		
-		//((TextView) convertView.findViewById(R.id.IPAddress)).setText(trap.IP);
-        ((TextView) convertView.findViewById(R.id.IPAddress)).setText(trap.trap);
+
+        String trapDescription = "";
+        try
+        {
+            trapDescription = trap.getPayloadAsString();
+        }
+        catch(Exception e)
+        {
+            trapDescription = "Unable to decode trap";
+        }
+
+        ((TextView) convertView.findViewById(R.id.IPAddress)).setText(trapDescription);
 
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
         Date trapDate = null;

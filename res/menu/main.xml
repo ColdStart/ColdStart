@@ -2,9 +2,9 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
     
     <item android:id="@+id/GCMStatus" android:title="@string/menuGCMStatus" android:showAsAction="always" android:icon="@drawable/ic_action_gcm_failed"></item>
-    <!-- <item android:id="@+id/ResolveAll" android:title="Acknowledge all Traps" android:showAsAction="always" android:icon="@drawable/ic_action_resolve_all"></item> -->
     <item android:id="@+id/SeeAPIKey" android:title="@string/menuAuthKey" android:showAsAction="always|withText" android:icon="@drawable/ic_action_apikey"></item>
 
     <item android:id="@+id/Settings" android:title="@string/menuSettings" android:showAsAction="never" android:icon="@drawable/ic_action_settings"></item>
+    <!-- <item android:id="@+id/Filters" android:title="@string/menuSetFilters" android:showAsAction="never" android:icon="@drawable/ic_action_settings"></item> -->
     <item android:id="@+id/Logout" android:title="@string/menuLogout" android:showAsAction="never" android:icon="@drawable/ic_action_settings"></item>
 </menu>

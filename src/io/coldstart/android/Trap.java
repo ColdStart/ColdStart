@@ -22,6 +22,10 @@ import android.database.Cursor;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.Log;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.Iterator;
 
 public class Trap implements Parcelable 
 {
@@ -103,6 +107,28 @@ public class Trap implements Parcelable
         {
             this.read = true;
         }
+    }
+
+    public String getPayloadAsString() throws JSONException
+    {
+        JSONObject jsonTrap = new JSONObject(this.trap);
+        String trapDescription = "";
+
+        Iterator<String> iter = jsonTrap.keys();
+        while (iter.hasNext())
+        {
+            String key = iter.next();
+            try
+            {
+                trapDescription += jsonTrap.get(key) + "\n";
+            }
+            catch (JSONException e)
+            {
+                // Something went wrong!
+            }
+        }
+
+        return trapDescription;
     }
 
 }

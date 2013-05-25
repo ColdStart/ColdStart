@@ -364,16 +364,12 @@ public class TrapListActivity extends FragmentActivity implements TrapListFragme
 
 			case R.id.SeeAPIKey:
 			{
-				/*ClipData clip = ClipData.newPlainText("ColdStart API Key",settings.getString("APIKey", ""));
-				ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
-				clipboard.setPrimaryClip(clip);*/
-				
 				if(dialogFragment != null)
 			    	dialogFragment.dismiss();
-			    
+
 			    FragmentTransaction ft = getFragmentManager().beginTransaction();
 			    Fragment prev = getFragmentManager().findFragmentByTag("dialog");
-			    if (prev != null) 
+			    if (prev != null)
 			    {
 			        ft.remove(prev);
 			        Log.i("prev","Removing");
@@ -384,9 +380,31 @@ public class TrapListActivity extends FragmentActivity implements TrapListFragme
 			    dialogFragment = ViewAPIKeyDialog.newInstance(settings.getString("APIKey", ""));
 			    dialogFragment.setCancelable(true);
 			    dialogFragment.show(ft, "dialog");
-			    
+
 			    return true;
 			}
+
+            /*case R.id.Filters:
+            {
+                if(dialogFragment != null)
+                    dialogFragment.dismiss();
+
+                FragmentTransaction ft = getFragmentManager().beginTransaction();
+                Fragment prev = getFragmentManager().findFragmentByTag("dialog");
+                if (prev != null)
+                {
+                    ft.remove(prev);
+                    Log.i("prev","Removing");
+                }
+                ft.addToBackStack(null);
+
+                // Create and show the dialog.
+                dialogFragment = HostFilterDialog.newInstance();
+                dialogFragment.setCancelable(true);
+                dialogFragment.show(ft, "dialog");
+
+                return true;
+            }*/
 		}
 		
 		return false;

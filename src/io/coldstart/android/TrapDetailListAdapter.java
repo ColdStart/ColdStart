@@ -99,8 +99,17 @@ public class TrapDetailListAdapter extends BaseAdapter
 
 
         ((TextView) convertView.findViewById(R.id.TrapDetail)).setText(TrapDetails);*/
+        String trapDescription = "";
+        try
+        {
+            trapDescription = trap.getPayloadAsString();
+        }
+        catch(Exception e)
+        {
+            trapDescription = "Unable to decode trap";
+        }
 
-        ((TextView) convertView.findViewById(R.id.TrapDetail)).setText(trap.trap);
+        ((TextView) convertView.findViewById(R.id.TrapDetail)).setText(trapDescription);
 
         ((TextView) convertView.findViewById(R.id.TrapDate)).setTypeface(Typeface.createFromAsset((context).getAssets(), "fonts/MavenPro-Regular.ttf"));
         ((TextView) convertView.findViewById(R.id.TrapDate)).setText(trap.date);

@@ -39,6 +39,12 @@ It is not designed to acknowledge or manage alerts; just to get them to you as q
     <string name="menuLogout">Logout (Stops alerts)</string>
     <string name="menuImportSNMP">SNMP Walk for system details</string>
     <string name="menuDeleteTraps">Delete Traps for this host</string>
+    <string name="menuSetFilters">Set Filters</string>
+
+    <!-- Fragment Filters -->
+    <string name="filterHostTitle">Filtered Hosts</string>
+    <string name="filterHostDescription">Traps from the IP addresses added to this list will be ignored and will not alert you.</string>
+    <string name="filterAddHostButton">Add Host</string>
 
     <!-- Preferences -->
     <string name="prefBundleCategoryTitle">Alert Bundling</string>

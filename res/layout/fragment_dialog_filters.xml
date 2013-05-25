@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="@string/filterHostTitle"
+        android:id="@+id/hostFilterTitle"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_margin="4dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="@string/filterHostDescription"
+        android:id="@+id/hostFilterDescription"
+        android:layout_below="@+id/hostFilterTitle"
+        android:layout_alignLeft="@+id/hostFilterTitle"
+        android:layout_marginRight="4dp"/>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/hostFilterDescription"
+        android:layout_centerHorizontal="true"
+        android:gravity="center_vertical|center_horizontal"
+        android:id="@+id/addHostLinearContainer">
+
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:inputType="numberDecimal"
+            android:ems="10"
+            android:id="@+id/hostEditText"/>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:text="@string/filterAddHostButton"
+            android:id="@+id/addHostFilter"
+            android:background="@drawable/light_blue_button"
+            style="@style/ButtonText"
+            android:layout_marginLeft="12dp"
+            android:singleLine="false"/>
+    </LinearLayout>
+
+    <ListView
+        android:layout_width="wrap_content"
+        android:layout_height="200dp"
+        android:id="@+id/listView"
+        android:layout_below="@+id/addHostLinearContainer"
+        android:layout_centerHorizontal="true"
+        android:minHeight="180dp"
+        android:layout_marginTop="12dp"/>
+
+</RelativeLayout>
