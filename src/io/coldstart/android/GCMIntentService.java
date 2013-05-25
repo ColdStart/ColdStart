@@ -52,7 +52,7 @@ public class GCMIntentService extends com.google.android.gcm.GCMBaseIntentServic
 		//JSONArray payloadDetails = null;
 		
 		//0 = a single alert
-		if(alertType.equals("0"))
+		if(alertType.equals(API.MSG_TRAP))
 		{
 			try
 			{
@@ -137,17 +137,30 @@ public class GCMIntentService extends com.google.android.gcm.GCMBaseIntentServic
             broadcast.setAction(API.BROADCAST_ACTION);
             sendBroadcast(broadcast);
 		}
-        //4 = rate limit hit
-        else if(alertType.equals("4"))
-        {
-           Log.e("Rate Limit","Rate limit hit");
-            sendRateLimitNotification(intent.getExtras().getString("ratelimit"));
+        //1 = an generic notification
+        //TODO Create generic handler
 
+        //2 = batch (a bit like rate limit but on user choice)
+        else if(alertType.equals(API.MSG_BATCH))
+        {
+            sendBatchNotification(intent.getExtras().getString("batchID"));
         }
-		//1 = an indicative notification
+        //3 = Zenoss (for use with Rhybudd / coldstart HTTP API)
+        else if(alertType.equals(API.MSG_ZENOSS))
+        {
+            Intent broadcast = new Intent();
+            broadcast.setAction(API.ZENOSS_BROADCAST_ACTION);
+            sendBroadcast(broadcast);
+        }
+        //4 = rate limit hit
+        else if(alertType.equals(API.MSG_RATELIMIT))
+        {
+            sendRateLimitNotification(intent.getExtras().getString("ratelimit"));
+        }
 		else
 		{
-			
+			//Do nothing
+            //TODO Log an error / inform the user they need to update?
 		}
 		
 	}
@@ -155,15 +168,76 @@ public class GCMIntentService extends com.google.android.gcm.GCMBaseIntentServic
 	@Override
 	protected void onRegistered(Context arg0, String arg1) 
 	{
-		Log.e("GCMIntentService","onRegistered");
-		
+		//Log.e("GCMIntentService","onRegistered");
 	}
 
 	@Override
 	protected void onUnregistered(Context arg0, String arg1) 
 	{
-		Log.e("GCMIntentService","onUnregistered");
+		//Log.e("GCMIntentService","onUnregistered");
 	}
+
+    private void sendBatchNotification(String batchCount)
+    {
+        if(null == batchCount)
+            batchCount = "1+";
+
+        Intent intent = new Intent(this, TrapListActivity.class);
+        intent.putExtra("forceDownload",true);
+        PendingIntent pIntent = PendingIntent.getActivity(this, 0, intent, 0);
+
+        Intent broadcastDownload = new Intent();
+        broadcastDownload.setAction(BatchDownloadReceiver.BROADCAST_ACTION);
+        PendingIntent pBroadcastDownload = PendingIntent.getBroadcast(this,0,broadcastDownload,0);
+
+        Intent broadcastIgnore = new Intent();
+        broadcastIgnore.setAction(BatchIgnoreReceiver.BROADCAST_ACTION);
+        PendingIntent pBroadcastIgnore = PendingIntent.getBroadcast(this,0,broadcastIgnore,0);
+
+        Uri uri= RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+
+        Notification notification = null;
+
+        if(Build.VERSION.SDK_INT >= 16)
+        {
+            notification = new Notification.InboxStyle(
+                    new Notification.Builder(this)
+                            .setContentTitle("A batch of Traps has been sent")
+                            .setContentText("\"Batched traps are waiting to be downloaded")
+                            .setSmallIcon(R.drawable.ic_stat_ratelimit)
+                            .setVibrate(new long[] {0,100,200,300})
+                            .setAutoCancel(true)
+                            .setSound(uri)
+                            .setTicker("A batch of Traps has been sent")
+                            .addAction(R.drawable.ic_download_batch, "Get Batched Traps", pBroadcastDownload)
+                            .addAction(R.drawable.ic_ignore, "Ignore Batch", pBroadcastIgnore))
+                    .setBigContentTitle("A batch of Traps has been sent")
+                    .setSummaryText("Launch ColdStart.io to Manage These Events")
+                    .addLine("A number of traps have been sent and batched for delivery")
+                    .addLine("The current number of items queued is " + batchCount)
+                    .addLine(" ")
+                    .addLine("Tap \"Get Batched Traps\" to download the cached traps")
+                    .addLine("Tap \"Ignore Batch\" to delete them from the server.")
+
+                    .build();
+        }
+        else
+        {
+            notification = new Notification.Builder(this)
+                    .setContentTitle("A batch of Traps has been sent")
+                    .setContentText("A number of traps have been sent and batched for delivery. The current number of items queued is " + batchCount +
+                            "\nTap \"Get Alerts\" to batch download the outstanding traps or tap \"Ignore\" to delete them from the server.")
+                    .setSmallIcon(R.drawable.ic_stat_ratelimit)
+                    .setContentIntent(pIntent)
+                    .setVibrate(new long[] {0,100,200,300})
+                    .setAutoCancel(true)
+                    .setSound(uri).build();
+        }
+
+        NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+
+        notificationManager.notify(43524, notification);
+    }
 
 
     private void sendRateLimitNotification(String rateLimitCount)

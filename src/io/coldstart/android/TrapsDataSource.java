@@ -99,7 +99,6 @@ public class TrapsDataSource
         }
 
         // Make sure to close the cursor
-        //cursor.close();
         if (!cursor.isClosed() ||cursor != null)
         {
             cursor.close();

@@ -36,6 +36,13 @@ public class API
 	public static String SENDER_ID = "70012631542";
 	static int API_VERSION = 1;
     public static String BROADCAST_ACTION = "io.coldstart.android.broadcast.updateListUI";
+    public static String ZENOSS_BROADCAST_ACTION = "com.zenoss.broadcast";
+
+    public static String MSG_TRAP = "0";
+    public static String MSG_GENERIC = "1";
+    public static String MSG_BATCH = "2";
+    public static String MSG_ZENOSS = "3";
+    public static String MSG_RATELIMIT = "4";
 
 	DefaultHttpClient client;
   	ThreadSafeClientConnManager mgr;
