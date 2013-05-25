@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- Generated with http://android-holo-colors.com -->
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+
+  <style name="ColdStart" parent="android:Theme.Light">
+
+    <item name="android:editTextStyle">@style/EditTextColdStart</item>
+
+    <item name="android:spinnerStyle">@style/SpinnerColdStart</item>
+
+    <item name="android:dropDownSpinnerStyle">@style/SpinnerColdStart.DropDown</item>
+
+    <item name="android:spinnerDropDownItemStyle">@style/SpinnerDropDownItemColdStart</item>
+
+    <item name="android:listViewStyle">@style/ListViewColdStart</item>
+
+    <item name="android:listViewWhiteStyle">@style/ListViewColdStart.White</item>
+
+    <item name="android:spinnerItemStyle">@style/SpinnerItemColdStart</item>
+
+  </style>
+
+</resources>
