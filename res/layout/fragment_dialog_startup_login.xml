@@ -43,6 +43,8 @@
         android:layout_alignRight="@+id/keyPassword"
         android:layout_below="@+id/keyPassword"
         android:layout_marginTop="12dp"
-        android:text="@string/buttonLogin" />
+        android:text="@string/buttonLogin"
+        style="@style/ButtonText"
+        android:background="@drawable/light_blue_button"/>
 
 </RelativeLayout>

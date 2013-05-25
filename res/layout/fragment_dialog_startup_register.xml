@@ -46,7 +46,9 @@
         android:layout_height="wrap_content"
         android:layout_alignRight="@+id/emailAddress"
         android:layout_alignTop="@+id/registeringProgressBar"
-        android:text="Get API Key" />
+        android:text="Get API Key"
+        style="@style/ButtonText"
+        android:background="@drawable/light_blue_button"/>
 
     <TextView
         android:id="@+id/Description"
