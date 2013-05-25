@@ -47,8 +47,7 @@ public class API
 	DefaultHttpClient client;
   	ThreadSafeClientConnManager mgr;
   	DefaultHttpClient httpclient;
-  	
-  	
+
   	public API()
   	{
   		HttpParams params = new BasicHttpParams();

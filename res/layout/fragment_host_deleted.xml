@@ -19,5 +19,6 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="@string/hostDeletedMessage"
         android:id="@+id/textView2"
-        android:layout_gravity="center"/>
+        android:layout_gravity="center"
+        android:layout_marginLeft="5dp"/>
 </LinearLayout>
