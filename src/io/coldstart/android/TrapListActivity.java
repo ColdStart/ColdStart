@@ -153,6 +153,13 @@ public class TrapListActivity extends FragmentActivity implements TrapListFragme
 			// In two-pane mode, list items should be given the
 			// 'activated' state when touched.
 			((TrapListFragment) getSupportFragmentManager().findFragmentById(R.id.trap_list)).setActivateOnItemClick(true);
+
+            if(savedInstanceState == null)
+            {
+                WelcomeFragment fragment = new WelcomeFragment();
+                //fragment.setArguments(arguments);
+                getSupportFragmentManager().beginTransaction().replace(R.id.trap_detail_container, fragment).commit();
+            }
 		}
 
 		// TODO: If exposing deep links into your app, handle intents here.

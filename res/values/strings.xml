@@ -15,6 +15,10 @@
     <string name="buttonLogin">Login</string>
 
 
+    <!-- Fragment Welcome -->
+    <string name="textWelcomeTitle">Welcome</string>
+    <string name="textWelcomeParagraph">This app is designed to relay SNMP traps from your network devices to your phone immediately.\n\n
+It is not designed to acknowledge or manage alerts; just to get them to you as quickly, reliably and cheaply as possible.</string>
 
 
     <!-- Fragment API Key -->
