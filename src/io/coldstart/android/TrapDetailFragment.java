@@ -211,26 +211,27 @@ public class TrapDetailFragment extends Fragment
 
             case R.id.ImportSNMP:
             {
-                Log.e("onOptionsItemSelected", "Importing SNMP");
-
                 new AlertDialog.Builder(getActivity())
                         .setIcon(android.R.drawable.ic_dialog_alert)
                         .setTitle("Poll Host for SNMP Agent Details")
-                        .setMessage("Scans " + hostname + " from the ColdStart servers [ 89.151.79.202 ] using your SNMP community to get the location, description etc.\n\nEnsure that the relevant firewall ports / permissions are configured.")
+                        .setMessage("Scans " + hostname +
+                                " from the ColdStart servers [ 89.151.79.202 ] using your SNMP community to get the location, description etc.\n\n" +
+                                "Ensure that the relevant firewall ports / permissions are configured.")
                         .setPositiveButton("Yes, Scan", new DialogInterface.OnClickListener() {
                             @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                Log.i("onOptionsItemSelected", "Scanning");
+                            public void onClick(DialogInterface dialog, int which)
+                            {
                                 (new Thread() {
                                     public void run() {
                                         SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(getActivity());
 
-                                        try {
+                                        try
+                                        {
                                             API api = new API();
 
-                                            final ColdStartHost host = api.scanRemoteHost(settings.getString("APIKey", ""), hostname);
+                                            final ColdStartHost host = api.scanRemoteHost(settings.getString("APIKey", ""), ipaddr);
 
-                                            if(host.Error)
+                                            if (host.Error)
                                             {
                                                 getActivity().runOnUiThread(new Runnable() {
                                                     public void run() {
@@ -242,12 +243,38 @@ public class TrapDetailFragment extends Fragment
                                             {
                                                 datasource = new TrapsDataSource(getActivity());
                                                 datasource.open();
-                                                datasource.addHostDetails(host);
+
+                                                if(datasource.addHostDetails(host))
+                                                {
+                                                    getActivity().runOnUiThread(
+                                                            new Runnable()
+                                                            {
+                                                                public void run()
+                                                                {
+                                                                    if (twoPane)
+                                                                    {
+                                                                        try
+                                                                        {
+                                                                            ((TextView) getActivity().findViewById(R.id.Location)).setText(host.Location);
+                                                                            ((TextView) getActivity().findViewById(R.id.Description)).setText(host.Description);
+                                                                            ((TextView) getActivity().findViewById(R.id.Contact)).setText(host.Contact);
+                                                                        }
+                                                                        catch(Exception e)
+                                                                        {
+                                                                            //This is really lazy we should probably have a handler for this
+                                                                            e.printStackTrace();
+                                                                        }
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        //TODO Add some UI elements to the phone view for this data
+                                                                        Toast.makeText(getActivity(), host.Location + "\n" + host.Description + "\n" + host.Contact, Toast.LENGTH_SHORT).show();
+                                                                    }
+                                                               }
+                                                            }
+                                                    );
+                                                }
                                             }
-
-
-                                            //TODO actually update the UI
-
                                         }
                                         catch (Exception e)
                                         {
@@ -264,7 +291,7 @@ public class TrapDetailFragment extends Fragment
                                             {
                                                 datasource.close();
                                             }
-                                            catch(Exception e)
+                                            catch (Exception e)
                                             {
                                                 e.printStackTrace();
                                             }
@@ -287,19 +314,19 @@ public class TrapDetailFragment extends Fragment
                                         {
                                             ((TrapDetailActivity) getActivity()).exitOnDelete();
                                         }*/
-                                        }
                                     }
-
-                                    ).
-
-                                    start();
                                 }
-                            }
 
-                            )
+                                ).
+
+                                        start();
+                            }
+                        }
+
+                        )
                                     .
 
-                            setNegativeButton("No",null)
+                            setNegativeButton("No", null)
 
                             .
 
@@ -319,6 +346,16 @@ public class TrapDetailFragment extends Fragment
         datasource.open();
 
         listOfTraps = datasource.getTrapsforHost(ipaddr);
+        ColdStartHost hostDetails = null;
+        try
+        {
+            hostDetails = datasource.getHostDetails(ipaddr);
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+            hostDetails = new ColdStartHost();
+        }
 
         datasource.close();
 
@@ -331,6 +368,20 @@ public class TrapDetailFragment extends Fragment
         else
         {
             Toast.makeText(getActivity(),"There was an error addressing the UI",Toast.LENGTH_SHORT).show();
+        }
+
+        try
+        {
+            if (twoPane)
+            {
+                ((TextView) getActivity().findViewById(R.id.Location)).setText(hostDetails.Location);
+                ((TextView) getActivity().findViewById(R.id.Description)).setText(hostDetails.Description);
+                ((TextView) getActivity().findViewById(R.id.Contact)).setText(hostDetails.Contact);
+            }
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
         }
     }
 }

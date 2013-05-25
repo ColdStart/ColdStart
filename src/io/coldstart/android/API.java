@@ -1,3 +1,5 @@
+//Copyright
+
 package io.coldstart.android;
 
 import java.io.IOException;
@@ -299,6 +301,7 @@ public class API
                 host.Contact = scanObject.getString("contact");
                 host.Location = scanObject.getString("location");
                 host.Description = scanObject.getString("description");
+                host.IP = remoteHost;
                 host.Error = false;
                 return host;
             }

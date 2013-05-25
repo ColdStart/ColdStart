@@ -7,9 +7,9 @@ public class ColdStartHost
 {
     String HostName = "";
     String IP = "";
-    String Location = "";
-    String Contact = "";
-    String Description = "";
+    String Location = "Unknown Location";
+    String Contact = "No Contact Information";
+    String Description = "...";
     String ErrorMsg = "";
     Boolean Error = false;
 

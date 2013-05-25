@@ -8,6 +8,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 public class TrapsDataSource 
 {
@@ -15,6 +16,7 @@ public class TrapsDataSource
 	private TrapsDBOpenHelper dbHelper;
 	private String[] trapAllColumns = { "trapID","trapHostName","trapIP","trapDate","trapUptime","trapPayload","trapRead" };
 	private String[] trapAllColumnswCount = { "trapID","trapHostName","trapIP","trapDate","trapUptime","trapPayload","trapRead","count(1) as trapCount" };
+    private String[] hostDetails = {"Location", "Contact", "Description"};
 
     public TrapsDataSource(Context context)
 	{
@@ -76,6 +78,34 @@ public class TrapsDataSource
         {
             return false;
         }
+    }
+
+
+    public ColdStartHost getHostDetails(String IPAddress)
+    {
+        //						 query(String table, 				String[] columns, 	String selection, 	            String[] selectionArgs, String groupBy, String having, String orderBy)
+        Cursor cursor = database.query("host_details",              hostDetails,        "IP = \""+IPAddress+"\"", 	    null, 					null, 			null, 			null);
+
+        ColdStartHost dbHost = new ColdStartHost();
+        if(cursor.moveToFirst())
+        {
+            dbHost.Location = cursor.getString(0);
+            dbHost.Contact = cursor.getString(1);
+            dbHost.Description = cursor.getString(2);
+        }
+        else
+        {
+            Log.e("getHostDetails", "Unable to move to first!");
+        }
+
+        // Make sure to close the cursor
+        //cursor.close();
+        if (!cursor.isClosed() ||cursor != null)
+        {
+            cursor.close();
+            cursor=null;
+        }
+        return dbHost;
     }
 
 	  public void deleteSingleTrap(Trap trap)
