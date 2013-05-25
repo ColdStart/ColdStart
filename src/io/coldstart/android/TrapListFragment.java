@@ -17,8 +17,6 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
-import io.coldstart.android.dummy.DummyContent;
-
 /**
  * A list fragment representing a list of Traps. This fragment also supports
  * tablet devices by allowing list items to be given an 'activated' state upon

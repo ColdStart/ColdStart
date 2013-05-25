@@ -14,7 +14,6 @@ import android.widget.TextView;
 
 import android.widget.Toast;
 import com.google.android.gcm.GCMRegistrar;
-import io.coldstart.android.dummy.DummyContent;
 
 import java.util.List;
 
@@ -65,11 +64,6 @@ public class TrapDetailFragment extends Fragment
             getData();
         }
     };
-	
-	/**
-	 * The dummy content this fragment is presenting.
-	 */
-	private DummyContent.DummyItem mItem;
 
 	/**
 	 * Mandatory empty constructor for the fragment manager to instantiate the
@@ -136,12 +130,6 @@ public class TrapDetailFragment extends Fragment
 	{
 		View rootView = inflater.inflate(R.layout.fragment_trap_detail,	container, false);
 
-		// Show the dummy content as text in a TextView.
-		if (mItem != null) 
-		{
-			((TextView) rootView.findViewById(R.id.hostname)).setText(mItem.content);
-		}
-		
 		((TextView) rootView.findViewById(R.id.hostname)).setText(hostname);
         ((TextView) rootView.findViewById(R.id.hostname)).setTypeface(Typeface.createFromAsset((getActivity()).getAssets(), "fonts/MavenPro-Regular.ttf"));
 
