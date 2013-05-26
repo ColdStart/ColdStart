@@ -44,7 +44,8 @@ They could of course be wrong, if you know of any mistakes simply update the tex
     <string name="menuGCMStatus">See GCM Status</string>
     <string name="menuAuthKey">See Auth Key</string>
     <string name="menuSettings">Manage Settings</string>
-    <string name="menuLogout">Logout (Stops alerts)</string>
+    <string name="menuChangeKey">Change Auth Key</string>
+    <string name="menuPause">Pause alerts</string>
     <string name="menuImportSNMP">SNMP Walk for system details</string>
     <string name="menuDeleteTraps">Delete Traps for this host</string>
     <string name="menuSetFilters">Set Filters</string>

@@ -32,7 +32,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-
+import com.bugsense.trace.BugSenseHandler;
 import android.widget.Toast;
 import com.google.android.gcm.GCMRegistrar;
 
@@ -53,7 +53,6 @@ import com.google.android.gcm.GCMRegistrar;
  */
 public class TrapListActivity extends FragmentActivity implements TrapListFragment.Callbacks
 {
-
 	/**
 	 * Whether or not the activity is in two-pane mode, i.e. running on a tablet
 	 * device.
@@ -77,7 +76,9 @@ public class TrapListActivity extends FragmentActivity implements TrapListFragme
 	protected void onCreate(Bundle savedInstanceState) 
 	{
 		super.onCreate(savedInstanceState);
-		
+
+        BugSenseHandler.initAndStartSession(TrapListActivity.this, "b569cf15");
+
 		setContentView(R.layout.activity_trap_list);
 
 		securityID = API.md5(Settings.Secure.getString(getContentResolver(),Settings.Secure.ANDROID_ID));
@@ -95,16 +96,10 @@ public class TrapListActivity extends FragmentActivity implements TrapListFragme
 		{
 			Log.v("GCM", "Registering");
 			GCMRegistrar.register(this, API.SENDER_ID);
-			
-			/*if(null != gcmStatus)
-				gcmStatus.setIcon(R.drawable.ic_action_gcm_success);*/
 		} 
 		else 
 		{
 			Log.v("GCM", "Already registered");
-			
-			/*if(null != gcmStatus)
-				gcmStatus.setIcon(R.drawable.ic_action_gcm_success);*/
 		}
 		
 		Log.e("GCMID",GCMRegistrar.getRegistrationId(this));
@@ -113,28 +108,7 @@ public class TrapListActivity extends FragmentActivity implements TrapListFragme
 		
 		if(settings.getBoolean("firstRun", true))
 		{
-			if(dialogFragment != null)
-		    {
-		    	dialogFragment.dismiss();
-		    }
-		    
-		    // DialogFragment.show() will take care of adding the fragment
-		    // in a transaction.  We also want to remove any currently showing
-		    // dialog, so make our own transaction and take care of that here.
-		    FragmentTransaction ft = getFragmentManager().beginTransaction();
-		    Fragment prev = getFragmentManager().findFragmentByTag("dialog");
-		    if (prev != null) 
-		    {
-		        ft.remove(prev);
-		        Log.i("prev","Removing");
-		    }
-		    ft.addToBackStack(null);
-
-		    // Create and show the dialog.
-		    //dialogFragment = StartupProcessDialog.newInstance(GCMRegistrar.getRegistrationId(this));
-		    dialogFragment = StartupChooseDialog.newInstance();
-		    dialogFragment.setCancelable(true);
-		    dialogFragment.show(ft, "dialog");
+			showChooseDialog();
 		}
 		else
 		{
@@ -164,6 +138,32 @@ public class TrapListActivity extends FragmentActivity implements TrapListFragme
 
 		// TODO: If exposing deep links into your app, handle intents here.
 	}
+
+    private void showChooseDialog()
+    {
+        if(dialogFragment != null)
+        {
+            dialogFragment.dismiss();
+        }
+
+        // DialogFragment.show() will take care of adding the fragment
+        // in a transaction.  We also want to remove any currently showing
+        // dialog, so make our own transaction and take care of that here.
+        FragmentTransaction ft = getFragmentManager().beginTransaction();
+        Fragment prev = getFragmentManager().findFragmentByTag("dialog");
+        if (prev != null)
+        {
+            ft.remove(prev);
+            Log.i("prev","Removing");
+        }
+        ft.addToBackStack(null);
+
+        // Create and show the dialog.
+        //dialogFragment = StartupProcessDialog.newInstance(GCMRegistrar.getRegistrationId(this));
+        dialogFragment = StartupChooseDialog.newInstance();
+        dialogFragment.setCancelable(true);
+        dialogFragment.show(ft, "dialog");
+    }
 
 	public void subscribeToMessages()
 	{
@@ -296,7 +296,23 @@ public class TrapListActivity extends FragmentActivity implements TrapListFragme
 				return true;
 			}
 
-            case R.id.Logout:
+            case R.id.ChangeKey:
+            {
+                SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(this).edit();
+                editor.putBoolean("firstRun", true);
+                editor.putString("APIKey", "");
+                editor.putString("keyPassword", "");
+                editor.commit();
+                Intent intent = getIntent();
+                overridePendingTransition(0, 0);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                finish();
+                overridePendingTransition(0, 0);
+                startActivity(intent);
+                return true;
+            }
+
+            case R.id.PauseAlerts:
             {
                 new AlertDialog.Builder(this)
                         .setIcon(android.R.drawable.ic_dialog_alert)

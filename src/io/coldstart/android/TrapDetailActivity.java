@@ -23,6 +23,7 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.NavUtils;
 import android.view.MenuItem;
+import com.bugsense.trace.BugSenseHandler;
 
 /**
  * An activity representing a single Trap detail screen. This activity is only
@@ -39,6 +40,9 @@ public class TrapDetailActivity extends FragmentActivity
 	protected void onCreate(Bundle savedInstanceState) 
 	{
 		super.onCreate(savedInstanceState);
+
+        BugSenseHandler.initAndStartSession(TrapDetailActivity.this, "b569cf15");
+
 		setContentView(R.layout.activity_trap_detail);
 
 		// Show the Up button in the action bar.

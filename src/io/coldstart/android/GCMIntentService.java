@@ -57,7 +57,7 @@ public class GCMIntentService extends com.google.android.gcm.GCMBaseIntentServic
 		String ns = Context.NOTIFICATION_SERVICE;
 		mNM = (NotificationManager) arg0.getSystemService(ns);
 		
-		Log.e("GCMIntentService","onMessageonMessageonMessageonMessage");
+		//Log.e("GCMIntentService","onMessageonMessageonMessageonMessage");
 		
 		//GCM Payload
 		String alertCount = intent.getExtras().getString("alertCount");
@@ -68,14 +68,13 @@ public class GCMIntentService extends com.google.android.gcm.GCMBaseIntentServic
 		
 		//Stuff from the payload
 		String hostname = "---", TrapDetails = "---", IP = "", Date = "", Uptime = "", payloadDetails = "Unknown payload";
-		//JSONArray payloadDetails = null;
 		
 		//0 = a single alert
 		if(alertType.equals(API.MSG_TRAP))
 		{
             if( PreferenceManager.getDefaultSharedPreferences(this).getBoolean("allowBundling",false))
             {
-                Log.i("TRAP","Received a trap notification but I'm bundling");
+                //Log.i("TRAP","Received a trap notification but I'm bundling");
                 return;
             }
 
@@ -83,7 +82,7 @@ public class GCMIntentService extends com.google.android.gcm.GCMBaseIntentServic
 			{
 				JSONObject payload = new JSONObject(payloadJSON);
 				
-				Log.i("payload",payload.toString(3));
+				//Log.i("payload",payload.toString(3));
 				
 				try
 				{
@@ -174,7 +173,7 @@ public class GCMIntentService extends com.google.android.gcm.GCMBaseIntentServic
             }
             else
             {
-                Log.i("BATCHING","Batching isn't enabled at the moment");
+                //Log.i("BATCHING","Batching isn't enabled at the moment");
             }
         }
         //3 = Zenoss (for use with Rhybudd / coldstart HTTP API)

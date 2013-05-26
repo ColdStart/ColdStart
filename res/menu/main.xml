@@ -6,5 +6,7 @@
 
     <item android:id="@+id/Settings" android:title="@string/menuSettings" android:showAsAction="never" android:icon="@drawable/ic_action_settings"></item>
     <!-- <item android:id="@+id/Filters" android:title="@string/menuSetFilters" android:showAsAction="never" android:icon="@drawable/ic_action_settings"></item> -->
-    <item android:id="@+id/Logout" android:title="@string/menuLogout" android:showAsAction="never" android:icon="@drawable/ic_action_settings"></item>
+
+    <item android:id="@+id/PauseAlerts" android:title="@string/menuPause" android:showAsAction="never" android:icon="@drawable/ic_action_settings"></item>
+    <item android:id="@+id/ChangeKey" android:title="@string/menuChangeKey" android:showAsAction="never" android:icon="@drawable/ic_action_settings"></item>
 </menu>

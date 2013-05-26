@@ -26,6 +26,7 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.provider.Settings;
 import android.util.Log;
+import com.bugsense.trace.BugSenseHandler;
 
 import java.util.List;
 
@@ -38,8 +39,8 @@ public class BatchDownloadReceiver extends BroadcastReceiver
     {
         ((NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE)).cancel(43524);
 
-        Log.e("onReceive", "I'm a broadcast receiver!");
-        Log.e("onReceive", "Downloading Batch");
+        //Log.e("onReceive", "I'm a broadcast receiver!");
+        //Log.e("onReceive", "Downloading Batch");
 
         ((Thread) new Thread()
         {
@@ -56,7 +57,7 @@ public class BatchDownloadReceiver extends BroadcastReceiver
 
                     if(null == batchedTraps)
                     {
-                        Log.e("BatchDownloadReceiver", "BatchedTraps was null");
+                        //Log.e("BatchDownloadReceiver", "BatchedTraps was null");
                         return;
                     }
 
@@ -73,10 +74,11 @@ public class BatchDownloadReceiver extends BroadcastReceiver
                     broadcast.setAction(API.BROADCAST_ACTION);
                     context.sendBroadcast(broadcast);
                 }
-                catch(Exception e)
+                catch(Exception ex)
                 {
                     //TODO this is probably pretty bad!
-                    e.printStackTrace();
+                    //e.printStackTrace();
+                    //BugSenseHandler.sendExceptionMessage("BatchDownloadReceiver", "onReceive Thread", ex);
                 }
                 finally
                 {
