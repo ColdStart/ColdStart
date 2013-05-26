@@ -18,6 +18,7 @@
 */
 package io.coldstart.android;
 
+import android.preference.PreferenceManager;
 import android.widget.Toast;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -72,6 +73,12 @@ public class GCMIntentService extends com.google.android.gcm.GCMBaseIntentServic
 		//0 = a single alert
 		if(alertType.equals(API.MSG_TRAP))
 		{
+            if( PreferenceManager.getDefaultSharedPreferences(this).getBoolean("allowBundling",false))
+            {
+                Log.i("TRAP","Received a trap notification but I'm bundling");
+                return;
+            }
+
 			try
 			{
 				JSONObject payload = new JSONObject(payloadJSON);
@@ -129,22 +136,21 @@ public class GCMIntentService extends com.google.android.gcm.GCMBaseIntentServic
 			{
 				//e.printStackTrace();
 			}
-			
+
+            Trap trap = new Trap(hostname,IP);
+            trap.date = Date;
+            trap.uptime = Uptime;
+            trap.trap = payloadDetails;
+
 			if(Build.VERSION.SDK_INT >= 16)
 			{
-				SendInboxStyleNotification(alertCount,alertTime,hostname,payloadDetails);
+				SendInboxStyleNotification(alertCount,alertTime,hostname,trap.getPayloadAsString());
 			}
 			else
 			{
 				SendCombinedNotification(alertCount);
 			}
 
-			Trap trap = new Trap(hostname,IP);
-			trap.date = Date;
-			trap.uptime = Uptime;
-			
-			trap.trap = payloadDetails;
-			
 			datasource = new TrapsDataSource(this);
 		    datasource.open();
 		    datasource.addRecentTrap(trap);
@@ -161,7 +167,15 @@ public class GCMIntentService extends com.google.android.gcm.GCMBaseIntentServic
         //2 = batch (a bit like rate limit but on user choice)
         else if(alertType.equals(API.MSG_BATCH))
         {
-            sendBatchNotification(intent.getExtras().getString("batchID"));
+            //Check we are ones after a bundled alert (many people share this GCM ID)
+            if( PreferenceManager.getDefaultSharedPreferences(this).getBoolean("allowBundling",false))
+            {
+                sendBatchNotification(intent.getExtras().getString("alertCount"));
+            }
+            else
+            {
+                Log.i("BATCHING","Batching isn't enabled at the moment");
+            }
         }
         //3 = Zenoss (for use with Rhybudd / coldstart HTTP API)
         else if(alertType.equals(API.MSG_ZENOSS))

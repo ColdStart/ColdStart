@@ -109,23 +109,32 @@ public class Trap implements Parcelable
         }
     }
 
-    public String getPayloadAsString() throws JSONException
+    public String getPayloadAsString()
     {
-        JSONObject jsonTrap = new JSONObject(this.trap);
+        JSONObject jsonTrap = null;
         String trapDescription = "";
 
-        Iterator<String> iter = jsonTrap.keys();
-        while (iter.hasNext())
+        try
         {
-            String key = iter.next();
-            try
+            jsonTrap = new JSONObject(this.trap);
+
+            Iterator<String> iter = jsonTrap.keys();
+            while (iter.hasNext())
             {
-                trapDescription += jsonTrap.get(key) + "\n";
+                String key = iter.next();
+                try
+                {
+                    trapDescription += jsonTrap.get(key) + "\n";
+                }
+                catch (JSONException e)
+                {
+                    // Something went wrong!
+                }
             }
-            catch (JSONException e)
-            {
-                // Something went wrong!
-            }
+        }
+        catch(Exception e)
+        {
+            trapDescription = "Failed to decode trap";
         }
 
         return trapDescription;
