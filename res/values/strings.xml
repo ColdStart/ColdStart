@@ -21,6 +21,14 @@
 It is not designed to acknowledge or manage alerts; just to get them to you as quickly, reliably and cheaply as possible.</string>
 
 
+    <!-- Edit OID Activity -->
+    <string name="editOIDTitle">Edit OID Description Mapping</string>
+    <string name="editOIDButton">Submit Edit</string>
+
+    <string name="editOIDTabletFillerTitle">Help edit descriptions:</string>
+    <string name="editOIDTabletFillerContent">Most of these SNMP descriptions have been automatically generated from various databases.\n\n
+They could of course be wrong, if you know of any mistakes simply update the text and then tap the \"Submit Edit\" button.</string>
+
     <!-- Fragment API Key -->
     <string name="buttonClose">Close</string>
 
@@ -50,11 +58,10 @@ It is not designed to acknowledge or manage alerts; just to get them to you as q
     <string name="prefBundleCategoryTitle">Alert Bundling</string>
     <string name="prefBundleTitle">Enable Alert Bundling</string>
     <string name="prefBundleDesc">Allows ColdStart to bundle traps together to reduce alert bursting</string>
-    <string name="prefBundleDelayDialogTitle">Delay in seconds before trap relay</string>
+    <string name="prefBundleDelayDialogTitle">Delay before batched notification is sent</string>
     <string name="prefBundleDelayTitle">Bundling Delay</string>
     <string name="prefBundleDelayDesc">Maximum delay before trap alerts are relayed</string>
     <string-array name="BackgroundServiceDelay_preference">
-        <item>30 Seconds</item>
         <item>1 Minute</item>
         <item>2 Minutes</item>
         <item>5 Minutes</item>
@@ -64,7 +71,6 @@ It is not designed to acknowledge or manage alerts; just to get them to you as q
         <item>1 Hour</item>
     </string-array>
     <string-array name="BackgroundServiceDelay_preference_values">
-        <item>30</item>
         <item>60</item>
         <item>120</item>
         <item>360</item>

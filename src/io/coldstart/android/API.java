@@ -296,6 +296,8 @@ public class API
         }
     }
 
+
+
     public ColdStartHost scanRemoteHost(String APIKey, String remoteHost) throws ClientProtocolException, IOException
     {
         ColdStartHost host = new ColdStartHost();
@@ -388,7 +390,46 @@ public class API
             return false;
         }
     }
-  	
+
+
+    public boolean submitOIDEdit(String OID, String Edit) throws ClientProtocolException, IOException
+    {
+        HttpPost httpost = new HttpPost("http://api.coldstart.io/"+API.API_VERSION+"/submitoidedit");
+
+
+        List <NameValuePair> nvps = new ArrayList <NameValuePair>();
+        nvps.add(new BasicNameValuePair("version", Integer.toString(API.API_VERSION)));
+        nvps.add(new BasicNameValuePair("oid", OID));
+        nvps.add(new BasicNameValuePair("description", Edit));
+
+        httpost.setEntity(new UrlEncodedFormEntity(nvps, HTTP.UTF_8));
+
+        HttpResponse response = httpclient.execute(httpost);
+
+        String rawJSON = EntityUtils.toString(response.getEntity());
+        response.getEntity().consumeContent();
+
+        Log.i("rawJSON",rawJSON);
+        try
+        {
+            JSONObject subscribeObject = new JSONObject(rawJSON);
+
+            if(subscribeObject.has("uuid"))
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        catch (JSONException e)
+        {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+            return false;
+        }
+    }
   	
   	public boolean updateAccountSettings(String deviceID, boolean bundleAlerts, String bundleDelay) throws ClientProtocolException, IOException
 	{

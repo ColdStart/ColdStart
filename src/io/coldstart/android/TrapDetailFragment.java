@@ -83,6 +83,31 @@ public class TrapDetailFragment extends Fragment
         }
     };
 
+
+
+    View.OnClickListener detailClickListener = new View.OnClickListener()
+    {
+        public void onClick(View v)
+        {
+            final int position = (Integer) v.getTag();
+
+            new AlertDialog.Builder(getActivity())
+                    .setIcon(R.drawable.ic_incorrect)
+                    .setTitle("Is this OID description incorrect?")
+                    .setMessage("You can edit an incorrect description and submit it back to the lookup database for review.")
+                    .setPositiveButton("Yes, Edit it", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which)
+                        {
+                            Intent EditDescriptionIntent = new Intent(getActivity(), EditOIDActivity.class);
+                            EditDescriptionIntent.putExtra("payload",listOfTraps.get(position).trap);
+                            getActivity().startActivity(EditDescriptionIntent);
+                        }
+                    })
+                    .setNegativeButton("No", null)
+                    .show();
+        }
+    };
 	/**
 	 * Mandatory empty constructor for the fragment manager to instantiate the
 	 * fragment (e.g. upon screen orientation changes).
@@ -345,6 +370,7 @@ public class TrapDetailFragment extends Fragment
         return false;
     }
 
+
     private void getData()
     {
         Log.i("getData","getting data");
@@ -365,7 +391,7 @@ public class TrapDetailFragment extends Fragment
 
         datasource.close();
 
-        adapter = new TrapDetailListAdapter(getActivity(),listOfTraps);
+        adapter = new TrapDetailListAdapter(getActivity(),listOfTraps,detailClickListener);
 
         if(null != list)
         {

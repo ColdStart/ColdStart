@@ -42,10 +42,11 @@ public class TrapDetailListAdapter extends BaseAdapter
     OnClickListener trapOnClick = null;
     OnLongClickListener trapOnLongClick = null;
 
-    public TrapDetailListAdapter(Context context, List<Trap> listOfTraps)
+    public TrapDetailListAdapter(Context context, List<Trap> listOfTraps, OnClickListener trapOnClick)
     {
         this.context = context;
         this.listOfTraps = listOfTraps;
+        this.trapOnClick = trapOnClick;
     }
     
     @Override
@@ -113,6 +114,12 @@ public class TrapDetailListAdapter extends BaseAdapter
 
         ((TextView) convertView.findViewById(R.id.TrapDate)).setTypeface(Typeface.createFromAsset((context).getAssets(), "fonts/MavenPro-Regular.ttf"));
         ((TextView) convertView.findViewById(R.id.TrapDate)).setText(trap.date);
+
+        if(trapOnClick != null)
+        {
+            convertView.setTag(position);
+            convertView.setOnClickListener((OnClickListener) trapOnClick);
+        }
 
 		return convertView;
 	}
