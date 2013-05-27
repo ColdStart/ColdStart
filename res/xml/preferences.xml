@@ -6,7 +6,7 @@
         <CheckBoxPreference
 	        android:key="allowBundling"
 	        android:title="@string/prefBundleTitle"
-	        android:summary="@string/prefBundleTitle"
+	        android:summary="@string/prefBundleDesc"
 	        android:defaultValue="false"
 		/>
         

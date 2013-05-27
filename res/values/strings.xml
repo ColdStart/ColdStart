@@ -57,11 +57,11 @@ They could of course be wrong, if you know of any mistakes simply update the tex
 
     <!-- Preferences -->
     <string name="prefBundleCategoryTitle">Alert Bundling</string>
-    <string name="prefBundleTitle">Enable Alert Bundling</string>
-    <string name="prefBundleDesc">Allows ColdStart to bundle traps together to reduce alert bursting</string>
+    <string name="prefBundleTitle">Enable Batching</string>
+    <string name="prefBundleDesc">Enables the buffering of traps on the ColdStart servers, notifications are periodically pushed to your device allowing you to download the entire batch in one go.</string>
     <string name="prefBundleDelayDialogTitle">Delay before batched notification is sent</string>
     <string name="prefBundleDelayTitle">Bundling Delay</string>
-    <string name="prefBundleDelayDesc">Maximum delay before trap alerts are relayed</string>
+    <string name="prefBundleDelayDesc">Maximum delay before a notification that batched traps are waiting is sent to your device.</string>
     <string-array name="BackgroundServiceDelay_preference">
         <item>1 Minute</item>
         <item>2 Minutes</item>

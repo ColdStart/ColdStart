@@ -33,6 +33,7 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.conn.scheme.PlainSocketFactory;
 import org.apache.http.conn.scheme.Scheme;
 import org.apache.http.conn.scheme.SchemeRegistry;
+import org.apache.http.conn.ssl.SSLSocketFactory;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.impl.conn.tsccm.ThreadSafeClientConnManager;
 import org.apache.http.message.BasicNameValuePair;
@@ -71,7 +72,7 @@ public class API
   		HttpParams params = new BasicHttpParams();
     	this.client = new DefaultHttpClient(); 
         SchemeRegistry registry = new SchemeRegistry();
-        registry.register(new Scheme("http", PlainSocketFactory.getSocketFactory(), 80));
+        registry.register(new Scheme("https", SSLSocketFactory.getSocketFactory(), 443));
 
         this.mgr = new ThreadSafeClientConnManager(params, registry);
         this.httpclient = new DefaultHttpClient(mgr, client.getParams());
@@ -90,7 +91,7 @@ public class API
 	
   	public String createGCMAccount(String EmailAddress, String Password, String gcmID, String deviceID) throws ClientProtocolException, IOException
 	{
-        HttpPost httpost = new HttpPost("http://api.coldstart.io/"+API.API_VERSION+"/register");
+        HttpPost httpost = new HttpPost("https://api.coldstart.io/"+API.API_VERSION+"/register");
 
         List <NameValuePair> nvps = new ArrayList <NameValuePair>();
         nvps.add(new BasicNameValuePair("version", Integer.toString(API.API_VERSION)));
@@ -132,7 +133,7 @@ public class API
   	
   	public boolean updateGCMAccount(String APIKey, String Password, String gcmID, String deviceID) throws ClientProtocolException, IOException
 	{
-        HttpPost httpost = new HttpPost("http://api.coldstart.io/"+API.API_VERSION+"/subscribe");
+        HttpPost httpost = new HttpPost("https://api.coldstart.io/"+API.API_VERSION+"/subscribe");
 
         
         List <NameValuePair> nvps = new ArrayList <NameValuePair>();
@@ -179,7 +180,7 @@ public class API
 
     public boolean ignoreBatch(String APIKey, String Password, String deviceID) throws ClientProtocolException, IOException
 {
-    HttpPost httpost = new HttpPost("http://api.coldstart.io/"+API.API_VERSION+"/ignore");
+    HttpPost httpost = new HttpPost("https://api.coldstart.io/"+API.API_VERSION+"/ignore");
 
 
     List <NameValuePair> nvps = new ArrayList <NameValuePair>();
@@ -224,7 +225,7 @@ public class API
 
     public List<Trap> getBatch(String APIKey, String Password, String deviceID) throws ClientProtocolException, IOException
     {
-        HttpPost httpost = new HttpPost("http://api.coldstart.io/"+API.API_VERSION+"/batch");
+        HttpPost httpost = new HttpPost("https://api.coldstart.io/"+API.API_VERSION+"/batch");
 
 
         List <NameValuePair> nvps = new ArrayList <NameValuePair>();
@@ -302,7 +303,7 @@ public class API
     {
         ColdStartHost host = new ColdStartHost();
 
-        HttpPost httpost = new HttpPost("http://api.coldstart.io/"+API.API_VERSION+"/scan");
+        HttpPost httpost = new HttpPost("https://api.coldstart.io/"+API.API_VERSION+"/scan");
 
 
         List <NameValuePair> nvps = new ArrayList <NameValuePair>();
@@ -348,7 +349,7 @@ public class API
 
     public boolean logoutGCMAccount(String APIKey, String Password, String deviceID) throws ClientProtocolException, IOException
     {
-        HttpPost httpost = new HttpPost("http://api.coldstart.io/"+API.API_VERSION+"/logout");
+        HttpPost httpost = new HttpPost("https://api.coldstart.io/"+API.API_VERSION+"/logout");
 
 
         List <NameValuePair> nvps = new ArrayList <NameValuePair>();
@@ -394,7 +395,7 @@ public class API
 
     public boolean submitOIDEdit(String OID, String Edit) throws ClientProtocolException, IOException
     {
-        HttpPost httpost = new HttpPost("http://api.coldstart.io/"+API.API_VERSION+"/submitoidedit");
+        HttpPost httpost = new HttpPost("https://api.coldstart.io/"+API.API_VERSION+"/submitoidedit");
 
 
         List <NameValuePair> nvps = new ArrayList <NameValuePair>();
@@ -433,7 +434,7 @@ public class API
   	
   	public boolean updateAccountSettings(String deviceID, boolean bundleAlerts, String bundleDelay) throws ClientProtocolException, IOException
 	{
-        HttpPost httpost = new HttpPost("http://api.coldstart.io/"+API.API_VERSION+"/settings");
+        HttpPost httpost = new HttpPost("https://api.coldstart.io/"+API.API_VERSION+"/settings");
 
         
         List <NameValuePair> nvps = new ArrayList <NameValuePair>();
