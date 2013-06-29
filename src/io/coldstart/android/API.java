@@ -20,11 +20,15 @@
 package io.coldstart.android;
 
 import java.io.IOException;
+import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.content.Context;
+import com.android.volley.RequestQueue;
+import com.android.volley.toolbox.Volley;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.ClientProtocolException;
@@ -51,9 +55,9 @@ import android.util.Log;
 
 public class API
 {
-	public static int SYNC_VERSION = 1;
-	public static String SENDER_ID = "70012631542";
-	static int API_VERSION = 1;
+    public static int SYNC_VERSION = 1;
+    public static String SENDER_ID = "70012631542";
+    static int API_VERSION = 1;
     public static String BROADCAST_ACTION = "io.coldstart.android.broadcast.updateListUI";
     public static String ZENOSS_BROADCAST_ACTION = "com.zenoss.broadcast";
 
@@ -63,30 +67,31 @@ public class API
     public static String MSG_ZENOSS = "3";
     public static String MSG_RATELIMIT = "4";
 
-	DefaultHttpClient client;
-  	ThreadSafeClientConnManager mgr;
-  	DefaultHttpClient httpclient;
+    DefaultHttpClient client;
+    ThreadSafeClientConnManager mgr;
+    DefaultHttpClient httpclient;
+    RequestQueue queue = null;
 
-  	public API()
-  	{
-  		HttpParams params = new BasicHttpParams();
-    	this.client = new DefaultHttpClient(); 
+    public API()
+    {
+        HttpParams params = new BasicHttpParams();
+        this.client = new DefaultHttpClient();
         SchemeRegistry registry = new SchemeRegistry();
         registry.register(new Scheme("https", SSLSocketFactory.getSocketFactory(), 443));
 
         this.mgr = new ThreadSafeClientConnManager(params, registry);
         this.httpclient = new DefaultHttpClient(mgr, client.getParams());
-        
-		//Timeout ----------------------------------
-		HttpParams httpParameters = new BasicHttpParams(); 
-		int timeoutConnection = 20000;
-		HttpConnectionParams.setConnectionTimeout(httpParameters, timeoutConnection);
-		int timeoutSocket = 30000;
-		HttpConnectionParams.setSoTimeout(httpParameters, timeoutSocket);
-		httpclient.setParams(httpParameters);
-		//Timeout ----------------------------------
-          	
-  	}
+
+        //Timeout ----------------------------------
+        HttpParams httpParameters = new BasicHttpParams();
+        int timeoutConnection = 20000;
+        HttpConnectionParams.setConnectionTimeout(httpParameters, timeoutConnection);
+        int timeoutSocket = 30000;
+        HttpConnectionParams.setSoTimeout(httpParameters, timeoutSocket);
+        httpclient.setParams(httpParameters);
+        //Timeout ----------------------------------
+
+    }
 	
 	
   	public String createGCMAccount(String EmailAddress, String Password, String gcmID, String deviceID) throws ClientProtocolException, IOException
@@ -130,98 +135,98 @@ public class API
 			return null;
 		}
 	}
-  	
-  	public boolean updateGCMAccount(String APIKey, String Password, String gcmID, String deviceID) throws ClientProtocolException, IOException
-	{
+
+    public boolean updateGCMAccount(String APIKey, String Password, String gcmID, String deviceID) throws ClientProtocolException, IOException
+    {
         HttpPost httpost = new HttpPost("https://api.coldstart.io/"+API.API_VERSION+"/subscribe");
 
-        
+
         List <NameValuePair> nvps = new ArrayList <NameValuePair>();
         nvps.add(new BasicNameValuePair("version", Integer.toString(API.API_VERSION)));
         nvps.add(new BasicNameValuePair("apikey", APIKey));
         nvps.add(new BasicNameValuePair("gcmid", gcmID));
         nvps.add(new BasicNameValuePair("deviceid", deviceID));
-        
+
         if(!Password.equals(""))
-        	nvps.add(new BasicNameValuePair("password", API.md5(Password)));
+            nvps.add(new BasicNameValuePair("password", API.md5(Password)));
 
 
-		httpost.setEntity(new UrlEncodedFormEntity(nvps, HTTP.UTF_8));
-		
-		HttpResponse response = httpclient.execute(httpost);
-        
+        httpost.setEntity(new UrlEncodedFormEntity(nvps, HTTP.UTF_8));
+
+        HttpResponse response = httpclient.execute(httpost);
+
         String rawJSON = EntityUtils.toString(response.getEntity());
         response.getEntity().consumeContent();
-        
+
         Log.i("APIKey",APIKey);
         Log.i("gcmID",gcmID);
         Log.i("Password", API.md5(Password));
         Log.i("rawJSON",rawJSON);
-		try 
-		{
-			JSONObject subscribeObject = new JSONObject(rawJSON);
-			
-			if(subscribeObject.has("uuid"))
-			{
-				return true;
-			}
-			else
-			{
-				return false;
-			}
-		} 
-		catch (JSONException e) 
-		{
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			return false;
-		}
-	}
-
-    public boolean ignoreBatch(String APIKey, String Password, String deviceID) throws ClientProtocolException, IOException
-{
-    HttpPost httpost = new HttpPost("https://api.coldstart.io/"+API.API_VERSION+"/ignore");
-
-
-    List <NameValuePair> nvps = new ArrayList <NameValuePair>();
-    nvps.add(new BasicNameValuePair("version", Integer.toString(API.API_VERSION)));
-    nvps.add(new BasicNameValuePair("apikey", APIKey));
-    nvps.add(new BasicNameValuePair("deviceid", deviceID));
-
-    if(!Password.equals(""))
-        nvps.add(new BasicNameValuePair("password", API.md5(Password)));
-
-
-    httpost.setEntity(new UrlEncodedFormEntity(nvps, HTTP.UTF_8));
-
-    HttpResponse response = httpclient.execute(httpost);
-
-    String rawJSON = EntityUtils.toString(response.getEntity());
-    response.getEntity().consumeContent();
-
-    Log.i("APIKey",APIKey);
-    Log.i("Password", API.md5(Password));
-    Log.i("rawJSON",rawJSON);
-    try
-    {
-        JSONObject ignoreObject = new JSONObject(rawJSON);
-
-        if(ignoreObject.has("success") && ignoreObject.getBoolean("success"))
+        try
         {
-            return true;
+            JSONObject subscribeObject = new JSONObject(rawJSON);
+
+            if(subscribeObject.has("uuid"))
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
-        else
+        catch (JSONException e)
         {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
             return false;
         }
     }
-    catch (JSONException e)
+
+    public boolean ignoreBatch(String APIKey, String Password, String deviceID) throws ClientProtocolException, IOException
     {
-        // TODO Auto-generated catch block
-        e.printStackTrace();
-        return false;
+        HttpPost httpost = new HttpPost("https://api.coldstart.io/"+API.API_VERSION+"/ignore");
+
+
+        List <NameValuePair> nvps = new ArrayList <NameValuePair>();
+        nvps.add(new BasicNameValuePair("version", Integer.toString(API.API_VERSION)));
+        nvps.add(new BasicNameValuePair("apikey", APIKey));
+        nvps.add(new BasicNameValuePair("deviceid", deviceID));
+
+        if(!Password.equals(""))
+            nvps.add(new BasicNameValuePair("password", API.md5(Password)));
+
+
+        httpost.setEntity(new UrlEncodedFormEntity(nvps, HTTP.UTF_8));
+
+        HttpResponse response = httpclient.execute(httpost);
+
+        String rawJSON = EntityUtils.toString(response.getEntity());
+        response.getEntity().consumeContent();
+
+        Log.i("APIKey",APIKey);
+        Log.i("Password", API.md5(Password));
+        Log.i("rawJSON",rawJSON);
+        try
+        {
+            JSONObject ignoreObject = new JSONObject(rawJSON);
+
+            if(ignoreObject.has("success") && ignoreObject.getBoolean("success"))
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        catch (JSONException e)
+        {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+            return false;
+        }
     }
-}
 
     public List<Trap> getBatch(String APIKey, String Password, String deviceID) throws ClientProtocolException, IOException
     {
@@ -431,68 +436,83 @@ public class API
             return false;
         }
     }
-  	
-  	public boolean updateAccountSettings(String deviceID, boolean bundleAlerts, String bundleDelay) throws ClientProtocolException, IOException
-	{
+
+    public boolean updateAccountSettings(String deviceID, boolean bundleAlerts, String bundleDelay) throws ClientProtocolException, IOException
+    {
         HttpPost httpost = new HttpPost("https://api.coldstart.io/"+API.API_VERSION+"/settings");
 
-        
+
         List <NameValuePair> nvps = new ArrayList <NameValuePair>();
         nvps.add(new BasicNameValuePair("version", Integer.toString(API.API_VERSION)));
         nvps.add(new BasicNameValuePair("bundle", Boolean.toString(bundleAlerts)));
         nvps.add(new BasicNameValuePair("delay", bundleDelay));
         nvps.add(new BasicNameValuePair("deviceid", deviceID));
 
-		httpost.setEntity(new UrlEncodedFormEntity(nvps, HTTP.UTF_8));
-		
-		HttpResponse response = httpclient.execute(httpost);
-        
+        httpost.setEntity(new UrlEncodedFormEntity(nvps, HTTP.UTF_8));
+
+        HttpResponse response = httpclient.execute(httpost);
+
         String rawJSON = EntityUtils.toString(response.getEntity());
         response.getEntity().consumeContent();
-        
+
         Log.i("rawJSON",rawJSON);
-		try 
-		{
-			JSONObject subscribeObject = new JSONObject(rawJSON);
-			
-			if(subscribeObject.has("uuid"))
-			{
-				return true;
-			}
-			else
-			{
-				return false;
-			}
-		} 
-		catch (JSONException e) 
-		{
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			return false;
-		}
-	}
-  	
-	
-	public static String md5(String s) 
-	{
-	    try 
-	    {
-	        // Create MD5 Hash
-	        MessageDigest digest = java.security.MessageDigest.getInstance("MD5");
-	        digest.update(s.getBytes());
-	        byte messageDigest[] = digest.digest();
-	        
-	        // Create Hex String
-	        StringBuffer hexString = new StringBuffer();
-	        for (int i=0; i<messageDigest.length; i++)
-	            hexString.append(Integer.toHexString(0xFF & messageDigest[i]));
-	        return hexString.toString();
-	        
-	    } 
-	    catch (NoSuchAlgorithmException e) 
-	    {
-	        e.printStackTrace();
-	    }
-	    return "";
-	}
+        try
+        {
+            JSONObject subscribeObject = new JSONObject(rawJSON);
+
+            if(subscribeObject.has("uuid"))
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        catch (JSONException e)
+        {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+
+    public static String md5(String s)
+    {
+        /*try
+        {
+            // Create MD5 Hash
+            MessageDigest digest = java.security.MessageDigest.getInstance("MD5");
+            digest.update(s.getBytes());
+            byte messageDigest[] = digest.digest();
+
+            // Create Hex String
+            StringBuffer hexString = new StringBuffer();
+            for (int i=0; i<messageDigest.length; i++)
+                hexString.append(Integer.toHexString(0xFF & messageDigest[i]));
+            return hexString.toString();
+
+        }
+        catch (NoSuchAlgorithmException e)
+        {
+            e.printStackTrace();
+        }
+        return "";*/
+
+        MessageDigest mdEnc = null;
+        try
+        {
+            mdEnc = MessageDigest.getInstance("MD5");
+        }
+        catch (NoSuchAlgorithmException e)
+        {
+            Log.e("Exception","Exception while encrypting to md5");
+            e.printStackTrace();
+        }
+
+        mdEnc.update(s.getBytes(), 0, s.length());
+        String md5 = new BigInteger(1, mdEnc.digest()).toString(16) ;
+        return md5;
+    }
 }

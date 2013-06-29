@@ -21,6 +21,7 @@ import io.coldstart.android.R.color;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -100,12 +101,21 @@ public class TrapListAdapter extends BaseAdapter
 
         ((TextView) convertView.findViewById(R.id.IPAddress)).setText(trapDescription);
 
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd H:m:s");
         Date trapDate = null;
+        Date now = null;
+
         try
         {
-            trapDate = format.parse(trap.date.substring(0,10));
+            Calendar cal = Calendar.getInstance();
+            cal.set(Calendar.HOUR_OF_DAY,0);
+            cal.set(Calendar.MINUTE,0);
+            cal.set(Calendar.SECOND,0);
+            now = cal.getTime();
+
+            trapDate = format.parse(trap.date);//.substring(0,10)
             System.out.println(trapDate);
+            System.out.println(now);
         }
         catch (Exception e)
         {
@@ -115,7 +125,7 @@ public class TrapListAdapter extends BaseAdapter
 
         try
         {
-            if(new Date().before(trapDate))
+            if(trapDate.before(now))//  now.compareTo(trapDate) > 0
             {
                 ((TextView) convertView.findViewById(R.id.TrapDate)).setText(
                         trap.date.substring(8,10)
@@ -132,7 +142,7 @@ public class TrapListAdapter extends BaseAdapter
         }
         catch(Exception e)
         {
-            //e.printStackTrace();
+            e.printStackTrace();
         }
 
 		((TextView) convertView.findViewById(R.id.TrapCount)).setText(Integer.toString(trap.trapCount));

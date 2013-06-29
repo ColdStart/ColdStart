@@ -25,6 +25,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
 import android.util.Log;
@@ -34,6 +35,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 
 /**
  * A list fragment representing a list of Traps. This fragment also supports
@@ -185,6 +187,28 @@ public class TrapListFragment extends ListFragment
 		}
 	}
 
+    @Override
+    public void onStart()
+    {
+        super.onStart();
+
+        try
+        {
+            if(listOfTraps.size() == 0)
+            {
+                getActivity().findViewById(R.id.noTrapsMessage).setVisibility(View.VISIBLE);
+                ((TextView) getActivity().findViewById(R.id.noTrapsMessage)).setTypeface(Typeface.create("sans-serif-light", Typeface.NORMAL));
+            }
+            else
+            {
+                getActivity().findViewById(R.id.noTrapsMessage).setVisibility(View.GONE);
+            }
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+        }
+    }
 
 	@Override
 	public void onAttach(Activity activity) 

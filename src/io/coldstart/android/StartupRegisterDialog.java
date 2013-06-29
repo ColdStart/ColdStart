@@ -99,7 +99,7 @@ public class StartupRegisterDialog extends DialogFragment
                 //((FragmentDialog) getActivity()).showDialog();
             	EditText emailAddressET = (EditText) getDialog().findViewById(R.id.emailAddress);
             	EditText keyPasswordET = (EditText) getDialog().findViewById(R.id.keyPassword);
-            	
+                getDialog().findViewById(R.id.registeringProgressBar).setVisibility(View.VISIBLE);
             	/*if(userNameET.getText().toString().equals("") ||
             			userEmailET.getText().toString().equals("") ||
             			userPassword.getText().toString().equals(""))

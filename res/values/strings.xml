@@ -55,6 +55,9 @@ They could of course be wrong, if you know of any mistakes simply update the tex
     <string name="filterHostDescription">Traps from the IP addresses added to this list will be ignored and will not alert you.</string>
     <string name="filterAddHostButton">Add Host</string>
 
+    <!-- Main List -->
+    <string name="NoAlerts">There are currently no traps to display.</string>
+
     <!-- Preferences -->
     <string name="prefBundleCategoryTitle">Alert Bundling</string>
     <string name="prefBundleTitle">Enable Batching</string>

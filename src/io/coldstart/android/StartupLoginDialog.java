@@ -111,7 +111,8 @@ public class StartupLoginDialog extends DialogFragment
                 //((FragmentDialog) getActivity()).showDialog();
             	EditText APIKeyET = (EditText) getDialog().findViewById(R.id.APIKey);
             	EditText keyPasswordET = (EditText) getDialog().findViewById(R.id.keyPassword);
-            	
+                getDialog().findViewById(R.id.registeringProgressBar).setVisibility(View.VISIBLE);
+
             	if(APIKeyET.getText().toString().equals(""))
             	{
             		Toast.makeText(getActivity(), "Ensure the API Key is complete", Toast.LENGTH_SHORT).show();

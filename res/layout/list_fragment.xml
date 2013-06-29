@@ -2,7 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:orientation="vertical" >
+    android:orientation="vertical"
+    >
 
 <ListView
     android:id="@android:id/list"
@@ -13,7 +14,21 @@
     android:paddingTop="8dp"
     android:clipToPadding="false"
     android:layout_marginLeft="8dp"
-    android:layout_marginRight="8dp">
+    android:layout_marginRight="8dp"
+    android:layout_weight="1">
 
     </ListView>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="@string/NoAlerts"
+        android:id="@+id/noTrapsMessage"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:paddingBottom="8dp"
+        android:password="false"
+        android:gravity="center_vertical|center_horizontal"
+        android:paddingTop="4dp"/>
 </LinearLayout>
