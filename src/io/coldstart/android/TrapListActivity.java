@@ -86,7 +86,12 @@ public class TrapListActivity extends FragmentActivity implements TrapListFragme
 		ActionBar ab = getActionBar();
         ab.setTitle("ColdStart.io");
         ab.setSubtitle("Instant SNMP Trap Alerting");
-		
+
+        //Start the service just in case
+        //Gets round http://developer.android.com/reference/android/content/Intent.html#FLAG_INCLUDE_STOPPED_PACKAGES
+        startService(new Intent(this, ColdStartService.class));
+
+
 		//GCM stuff
 		GCMRegistrar.checkDevice(this);
 		GCMRegistrar.checkManifest(this);
@@ -445,7 +450,7 @@ public class TrapListActivity extends FragmentActivity implements TrapListFragme
 						try
 						{
 							API api = new API();
-							boolean updateTest = api.updateAccountSettings(securityID, settings.getBoolean("allowBundling", true), settings.getString("bundleDelay","30"));
+							boolean updateTest = api.updateAccountSettings(securityID, settings.getBoolean("allowBundling", false), settings.getString("bundleDelay","30"));
 							
 						}
 						catch(Exception e)
